@@ -19,3 +19,14 @@ fun appsForAllApps(apps: List<AppInfo>, hidden: Set<String>, query: String): Lis
  */
 fun singleMatchToOpen(enabled: Boolean, query: String, results: List<AppInfo>): AppInfo? =
     if (enabled && query.isNotBlank()) results.singleOrNull() else null
+
+/**
+ * Return true when the user can uninstall the app from HAL. HAL itself ([selfPkg]) cannot.
+ * A system app cannot, but an updated system app can: the system dialog then removes the updates.
+ * [flags] are the ApplicationInfo flags.
+ */
+fun canUninstall(pkg: String, selfPkg: String, flags: Int): Boolean {
+    val isSystem = flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM != 0
+    val isUpdatedSystem = flags and android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP != 0
+    return pkg != selfPkg && (!isSystem || isUpdatedSystem)
+}

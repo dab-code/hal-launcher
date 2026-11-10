@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.LauncherActivityInfo
 import android.content.pm.LauncherApps
+import android.net.Uri
 import android.os.Build
 import android.os.UserHandle
 import android.provider.Settings
@@ -36,7 +37,8 @@ fun getInstalledApps(context: Context): List<AppInfo> {
                     appList.add(
                         AppInfo(
                             appName, packageName, isEnabled = false, hasNotifications = false,
-                            componentKey = activityInfo.componentName.flattenToString()
+                            componentKey = activityInfo.componentName.flattenToString(),
+                            canUninstall = canUninstall(packageName, context.packageName, activityInfo.applicationInfo.flags)
                         )
                     )
                 }
@@ -85,6 +87,18 @@ fun launchApp(context: Context, packageName: String) {
     } catch (e: Exception) {
         Toast.makeText(context, context.getString(R.string.toast_error_launching, packageName), Toast.LENGTH_SHORT).show()
 
+    }
+}
+
+/**
+ * Open the system dialog that asks the user to uninstall the app. The dialog does the uninstall.
+ * HAL lists only the apps of its own user, so the dialog uninstalls the app for this user.
+ */
+fun requestUninstall(context: Context, packageName: String) {
+    try {
+        context.startActivity(Intent(Intent.ACTION_DELETE, Uri.fromParts("package", packageName, null)))
+    } catch (e: Exception) {
+        Log.e("requestUninstall", "Could not open the uninstall dialog for $packageName: ${e.message}", e)
     }
 }
 

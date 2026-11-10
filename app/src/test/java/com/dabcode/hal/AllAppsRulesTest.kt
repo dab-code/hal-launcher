@@ -1,7 +1,11 @@
 package com.dabcode.hal
 
+import android.content.pm.ApplicationInfo.FLAG_SYSTEM
+import android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class AllAppsRulesTest {
@@ -61,5 +65,26 @@ class AllAppsRulesTest {
     @Test
     fun withoutSelf_noHal_changesNothing() {
         assertEquals(apps, withoutSelf(apps, "com.dabcode.hal"))
+    }
+
+    @Test
+    fun canUninstall_userApp() {
+        assertTrue(canUninstall("a", "com.dabcode.hal", 0))
+    }
+
+    @Test
+    fun canUninstall_notHal() {
+        assertFalse(canUninstall("com.dabcode.hal", "com.dabcode.hal", 0))
+    }
+
+    @Test
+    fun canUninstall_notSystemApp() {
+        assertFalse(canUninstall("a", "com.dabcode.hal", FLAG_SYSTEM))
+    }
+
+    @Test
+    fun canUninstall_updatedSystemApp() {
+        // The system dialog removes the updates.
+        assertTrue(canUninstall("a", "com.dabcode.hal", FLAG_SYSTEM or FLAG_UPDATED_SYSTEM_APP))
     }
 }
