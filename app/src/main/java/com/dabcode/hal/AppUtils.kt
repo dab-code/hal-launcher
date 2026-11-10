@@ -102,6 +102,16 @@ fun requestUninstall(context: Context, packageName: String) {
     }
 }
 
+/**
+ * Return how many of [packages] are installed (and enabled) for this user.
+ * A stored setting keeps the packages of removed apps, so that a reinstall keeps the setting.
+ */
+fun installedCount(context: Context, packages: Set<String>): Int {
+    val launcherApps = context.getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
+    val user = android.os.Process.myUserHandle()
+    return packages.count { launcherApps.isPackageEnabled(it, user) }
+}
+
 fun isNotificationServiceEnabled(context: Context): Boolean {
     val pkgName = context.packageName
     val flat = Settings.Secure.getString(context.contentResolver, "enabled_notification_listeners")

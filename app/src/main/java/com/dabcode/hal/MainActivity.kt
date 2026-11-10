@@ -609,7 +609,8 @@ fun HomeScreen(
         if (showFocusNow) {
             FocusNowSheet(
                 profiles = focusProfiles,
-                alwaysAllowedCount = alwaysAllowed.size,
+                // Count only installed apps. The sheet reads it again each time it opens.
+                alwaysAllowedCount = remember(alwaysAllowed) { installedCount(context, alwaysAllowed) },
                 // The sheet stays open. The count comes from the settings, so it updates on return.
                 onEditAlwaysAllowed = { context.startActivity(Intent(context, LockdownAppsActivity::class.java)) },
                 onStart = { until, preset ->

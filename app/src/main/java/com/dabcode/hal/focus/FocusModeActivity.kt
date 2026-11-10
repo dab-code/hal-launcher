@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.dabcode.hal.HalThemed
 import com.dabcode.hal.applyThemeBeforeCreate
 import com.dabcode.hal.enableHalEdgeToEdge
+import com.dabcode.hal.installedCount
 import com.dabcode.hal.settingsViewModels
 
 class FocusModeActivity : AppCompatActivity() {
@@ -30,7 +32,8 @@ class FocusModeActivity : AppCompatActivity() {
                     viewModel = focusModeViewModel,
                     limitEnabled = limitEnabled,
                     limitMinutes = limitMinutes,
-                    alwaysAllowedCount = alwaysAllowed.size,
+                    // Count only installed apps. The stored set keeps removed apps for a reinstall.
+                    alwaysAllowedCount = remember(alwaysAllowed) { installedCount(this@FocusModeActivity, alwaysAllowed) },
                     onSaveLimit = settingsViewModel::updateDailyLimit,
                     openLimitAtStart = openLimit,
                     onBack = { finish() }
