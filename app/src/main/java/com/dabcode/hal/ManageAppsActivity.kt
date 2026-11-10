@@ -282,6 +282,20 @@ fun ManageAppsScreen(
         }
     }
 
+    // The uninstall can end after this screen resumes. Load the list again when an app goes away.
+    DisposableEffect(context) {
+        val launcherApps = context.getSystemService(android.content.Context.LAUNCHER_APPS_SERVICE) as android.content.pm.LauncherApps
+        val callback = object : android.content.pm.LauncherApps.Callback() {
+            override fun onPackageRemoved(packageName: String, user: android.os.UserHandle) = reloadAllAppsWithState()
+            override fun onPackageAdded(packageName: String, user: android.os.UserHandle) = Unit
+            override fun onPackageChanged(packageName: String, user: android.os.UserHandle) = Unit
+            override fun onPackagesAvailable(packageNames: Array<String>, user: android.os.UserHandle, replacing: Boolean) = Unit
+            override fun onPackagesUnavailable(packageNames: Array<String>, user: android.os.UserHandle, replacing: Boolean) = Unit
+        }
+        launcherApps.registerCallback(callback)
+        onDispose { launcherApps.unregisterCallback(callback) }
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -353,7 +367,8 @@ fun ManageAppsScreen(
                             onOpen = { requestOpen(appInfo) },
                             isHidden = appInfo.packageName in hiddenApps,
                             onRename = { appToRename = appInfo },
-                            onSetHidden = { hidden -> onSetHidden(appInfo.packageName, hidden) }
+                            onSetHidden = { hidden -> onSetHidden(appInfo.packageName, hidden) },
+                            onUninstall = { requestUninstall(context, appInfo.packageName) }
                         )
                     }
                 }
@@ -405,7 +420,7 @@ fun JumpBar(letters: List<Char>, onLetter: (Char) -> Unit) {
 
 /**
  * One app in All Apps: the name and the switch for the home screen.
- * A tap on the name calls [onOpen]. A long press shows a menu (rename, hide or unhide) and does not open the app.
+ * A tap on the name calls [onOpen]. A long press shows a menu (rename, hide or unhide, uninstall) and does not open the app.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -416,7 +431,8 @@ fun AppToggleItem(
     onOpen: () -> Unit,
     isHidden: Boolean = false,
     onRename: () -> Unit = {},
-    onSetHidden: (Boolean) -> Unit = {}
+    onSetHidden: (Boolean) -> Unit = {},
+    onUninstall: () -> Unit = {}
 ) {
     var menuOpen by remember { mutableStateOf(false) }
     Row(
@@ -451,6 +467,15 @@ fun AppToggleItem(
                         onSetHidden(!isHidden)
                     }
                 )
+                if (appInfo.canUninstall) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.action_uninstall)) },
+                        onClick = {
+                            menuOpen = false
+                            onUninstall()
+                        }
+                    )
+                }
             }
         }
 

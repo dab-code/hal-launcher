@@ -205,6 +205,7 @@
     <string name="reminder_text">%1$s : %2$s</string>
     <string name="action_hide">Masquer</string>
     <string name="action_unhide">Afficher</string>
+    <string name="action_uninstall">Désinstaller</string>
     <string name="hidden_apps_title">Apps masquées</string>
     <string name="hidden_apps_desc">Apps visibles uniquement dans la recherche</string>
     <string name="hidden_apps_empty">Aucune app masquée. Appuyez de manière prolongée sur une app dans Toutes les apps pour la masquer.</string>

@@ -6,6 +6,8 @@
         tools:ignore="ProtectedPermissions" />
     <!-- Usage reminders. HAL asks for it only when the user turns the reminders on. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- "Uninstall" opens the system uninstall dialog (ACTION_DELETE). The user confirms there. -->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <queries>
         <intent>

@@ -199,6 +199,7 @@
     <string name="reminder_text">%1$s：%2$s</string>
     <string name="action_hide">非表示</string>
     <string name="action_unhide">再表示</string>
+    <string name="action_uninstall">アンインストール</string>
     <string name="hidden_apps_title">非表示のアプリ</string>
     <string name="hidden_apps_desc">検索したときだけ表示されるアプリ</string>
     <string name="hidden_apps_empty">非表示のアプリはありません。すべてのアプリでアプリを長押しすると非表示にできます。</string>

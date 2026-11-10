@@ -202,6 +202,7 @@
     <string name="reminder_text">%1$s: %2$s</string>
     <string name="action_hide">Skjul</string>
     <string name="action_unhide">Vis igjen</string>
+    <string name="action_uninstall">Avinstaller</string>
     <string name="hidden_apps_title">Skjulte apper</string>
     <string name="hidden_apps_desc">Apper som bare vises når du søker</string>
     <string name="hidden_apps_empty">Ingen skjulte apper. Trykk lenge på en app i Alle apper for å skjule den.</string>

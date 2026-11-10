@@ -249,6 +249,7 @@
     <string name="reminder_text">%1$s: %2$s</string>
     <string name="action_hide">Hide</string>
     <string name="action_unhide">Unhide</string>
+    <string name="action_uninstall">Uninstall</string>
     <string name="hidden_apps_title">Hidden apps</string>
     <string name="hidden_apps_desc">Apps that show only when you search</string>
     <string name="hidden_apps_empty">No hidden apps. Long-press an app in All Apps to hide it.</string>

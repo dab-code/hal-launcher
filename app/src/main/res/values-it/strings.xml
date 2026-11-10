@@ -205,6 +205,7 @@
     <string name="reminder_text">%1$s: %2$s</string>
     <string name="action_hide">Nascondi</string>
     <string name="action_unhide">Mostra</string>
+    <string name="action_uninstall">Disinstalla</string>
     <string name="hidden_apps_title">App nascoste</string>
     <string name="hidden_apps_desc">App visibili solo quando cerchi</string>
     <string name="hidden_apps_empty">Nessuna app nascosta. Tieni premuta un\'app in Tutte le app per nasconderla.</string>

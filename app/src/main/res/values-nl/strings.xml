@@ -202,6 +202,7 @@
     <string name="reminder_text">%1$s: %2$s</string>
     <string name="action_hide">Verbergen</string>
     <string name="action_unhide">Weer tonen</string>
+    <string name="action_uninstall">Verwijderen</string>
     <string name="hidden_apps_title">Verborgen apps</string>
     <string name="hidden_apps_desc">Apps die alleen verschijnen als je zoekt</string>
     <string name="hidden_apps_empty">Geen verborgen apps. Houd een app in Alle apps ingedrukt om hem te verbergen.</string>

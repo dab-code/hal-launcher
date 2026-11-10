@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -258,9 +259,10 @@ fun DefaultLauncherPromptDialog(
 /**
  * The dialog to rename an app. Save with an empty name or the original name gives the original name back.
  * [onSave] gets the name to store, or null to remove the custom name.
+ * With [onUninstall], the dialog also shows "Uninstall" (only when the app can be uninstalled).
  */
 @Composable
-fun RenameAppDialog(app: AppInfo, onSave: (String?) -> Unit, onDismiss: () -> Unit) {
+fun RenameAppDialog(app: AppInfo, onSave: (String?) -> Unit, onDismiss: () -> Unit, onUninstall: (() -> Unit)? = null) {
     var text by remember(app.componentKey) { mutableStateOf(app.appName) }
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -280,6 +282,15 @@ fun RenameAppDialog(app: AppInfo, onSave: (String?) -> Unit, onDismiss: () -> Un
                     color = LocalPalette.current.muted,
                     modifier = Modifier.padding(top = 8.dp)
                 )
+                // A quiet action under the name. The buttons row has no room for a third button.
+                if (onUninstall != null && app.canUninstall) {
+                    TextButton(
+                        onClick = onUninstall,
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.textButtonColors(contentColor = LocalPalette.current.muted),
+                        modifier = Modifier.padding(top = 8.dp)
+                    ) { Text(stringResource(R.string.action_uninstall)) }
+                }
             }
         },
         confirmButton = {
@@ -646,7 +657,11 @@ fun HomeScreen(
                     onRenameApp(app.componentKey, name)
                     appToRename = null
                 },
-                onDismiss = { appToRename = null }
+                onDismiss = { appToRename = null },
+                onUninstall = {
+                    appToRename = null
+                    requestUninstall(context, app.packageName)
+                }
             )
         }
 

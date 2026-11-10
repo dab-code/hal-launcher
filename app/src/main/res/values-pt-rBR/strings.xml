@@ -205,6 +205,7 @@
     <string name="reminder_text">%1$s: %2$s</string>
     <string name="action_hide">Ocultar</string>
     <string name="action_unhide">Mostrar</string>
+    <string name="action_uninstall">Desinstalar</string>
     <string name="hidden_apps_title">Apps ocultos</string>
     <string name="hidden_apps_desc">Apps que só aparecem na busca</string>
     <string name="hidden_apps_empty">Nenhum app oculto. Toque e segure um app em Todos os apps para ocultá-lo.</string>

@@ -202,6 +202,7 @@
     <string name="reminder_text">%1$s: %2$s</string>
     <string name="action_hide">Ausblenden</string>
     <string name="action_unhide">Einblenden</string>
+    <string name="action_uninstall">Deinstallieren</string>
     <string name="hidden_apps_title">Ausgeblendete Apps</string>
     <string name="hidden_apps_desc">Apps, die nur bei der Suche erscheinen</string>
     <string name="hidden_apps_empty">Keine ausgeblendeten Apps. Halte eine App in Alle Apps gedrückt, um sie auszublenden.</string>
