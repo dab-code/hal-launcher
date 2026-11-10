@@ -95,6 +95,20 @@ class SettingsViewModel(
         viewModelScope.launch { repository.updateShowAppScreenTime(show) }
     }
 
+    val clockFormat: StateFlow<String> = repository.clockFormat
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.CLOCK_FORMAT_AUTO)
+
+    fun updateClockFormat(format: String) {
+        viewModelScope.launch { repository.updateClockFormat(format) }
+    }
+
+    val clockSize: StateFlow<String> = repository.clockSize
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.CLOCK_SIZE_BIG)
+
+    fun updateClockSize(size: String) {
+        viewModelScope.launch { repository.updateClockSize(size) }
+    }
+
     val notificationDotsEnabled: StateFlow<Boolean> = repository.notificationDotsEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.DEFAULT_NOTIFICATION_DOTS_ENABLED)
 
