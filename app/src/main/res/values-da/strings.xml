@@ -179,6 +179,9 @@
     <string name="home_stats_toggle">Vis skærmtid og oplåsninger på startskærmen</string>
     <string name="home_stats_on_desc">Startskærmen viser skærmtid og oplåsninger</string>
     <string name="home_stats_off_desc">Startskærmen viser kun uret og dine apps</string>
+    <string name="app_time_toggle">Vis skærmtid ved apps</string>
+    <string name="app_time_on_desc">Startskærmen viser dagens skærmtid ved hver app</string>
+    <string name="app_time_off_desc">Startskærmen viser kun navnene på apps</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Altid tilladt: %1$d app · Rediger</item>

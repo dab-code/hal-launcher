@@ -223,6 +223,9 @@
     <string name="home_stats_toggle">Show screen time and pickups on home</string>
     <string name="home_stats_on_desc">Home shows screen time and pickups</string>
     <string name="home_stats_off_desc">Home shows only the clock and your apps</string>
+    <string name="app_time_toggle">Show screen time next to apps</string>
+    <string name="app_time_on_desc">Home shows the screen time of today next to each app</string>
+    <string name="app_time_off_desc">Home shows only the app names</string>
     <!-- The home tile label. %1$s: Pickups or Screen time. %2$s: stat_today. -->
     <string name="stat_label_period">%1$s · %2$s</string>
     <!-- The line in the Focus now sheet. %1$d: the number of always allowed apps. -->

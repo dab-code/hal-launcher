@@ -181,6 +181,9 @@
     <string name="home_stats_toggle">Mostrar tiempo de uso y desbloqueos en la pantalla de inicio</string>
     <string name="home_stats_on_desc">La pantalla de inicio muestra el tiempo de uso y los desbloqueos</string>
     <string name="home_stats_off_desc">La pantalla de inicio muestra solo el reloj y tus apps</string>
+    <string name="app_time_toggle">Mostrar tiempo de uso junto a las apps</string>
+    <string name="app_time_on_desc">La pantalla de inicio muestra el tiempo de uso de hoy junto a cada app</string>
+    <string name="app_time_off_desc">La pantalla de inicio muestra solo los nombres de las apps</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Siempre permitidas: %1$d app · Editar</item>

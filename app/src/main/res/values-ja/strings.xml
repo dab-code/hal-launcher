@@ -177,6 +177,9 @@
     <string name="home_stats_toggle">ホーム画面にスクリーンタイムとロック解除回数を表示</string>
     <string name="home_stats_on_desc">ホーム画面にスクリーンタイムとロック解除回数を表示します</string>
     <string name="home_stats_off_desc">ホーム画面には時計とアプリだけを表示します</string>
+    <string name="app_time_toggle">アプリの横にスクリーンタイムを表示</string>
+    <string name="app_time_on_desc">ホーム画面で各アプリの横に今日のスクリーンタイムを表示します</string>
+    <string name="app_time_off_desc">ホーム画面にはアプリ名だけを表示します</string>
     <string name="stat_label_period">%1$s・%2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="other">常に許可：%1$d個のアプリ・編集</item>

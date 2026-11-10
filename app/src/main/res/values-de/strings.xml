@@ -179,6 +179,9 @@
     <string name="home_stats_toggle">Bildschirmzeit und Entsperrungen auf dem Startbildschirm zeigen</string>
     <string name="home_stats_on_desc">Der Startbildschirm zeigt Bildschirmzeit und Entsperrungen</string>
     <string name="home_stats_off_desc">Der Startbildschirm zeigt nur die Uhr und deine Apps</string>
+    <string name="app_time_toggle">Bildschirmzeit neben Apps zeigen</string>
+    <string name="app_time_on_desc">Der Startbildschirm zeigt die heutige Bildschirmzeit neben jeder App</string>
+    <string name="app_time_off_desc">Der Startbildschirm zeigt nur die Namen der Apps</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Immer erlaubt: %1$d App · Bearbeiten</item>

@@ -181,6 +181,9 @@
     <string name="home_stats_toggle">Mostrar tempo de tela e desbloqueios na tela inicial</string>
     <string name="home_stats_on_desc">A tela inicial mostra o tempo de tela e os desbloqueios</string>
     <string name="home_stats_off_desc">A tela inicial mostra só o relógio e seus apps</string>
+    <string name="app_time_toggle">Mostrar tempo de tela ao lado dos apps</string>
+    <string name="app_time_on_desc">A tela inicial mostra o tempo de tela de hoje ao lado de cada app</string>
+    <string name="app_time_off_desc">A tela inicial mostra só os nomes dos apps</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Sempre permitidos: %1$d app · Editar</item>

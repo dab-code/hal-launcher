@@ -181,6 +181,9 @@
     <string name="home_stats_toggle">Afficher le temps d\'écran et les déverrouillages sur l\'écran d\'accueil</string>
     <string name="home_stats_on_desc">L\'écran d\'accueil affiche le temps d\'écran et les déverrouillages</string>
     <string name="home_stats_off_desc">L\'écran d\'accueil affiche seulement l\'horloge et vos apps</string>
+    <string name="app_time_toggle">Afficher le temps d\'écran à côté des apps</string>
+    <string name="app_time_on_desc">L\'écran d\'accueil affiche le temps d\'écran du jour à côté de chaque app</string>
+    <string name="app_time_off_desc">L\'écran d\'accueil affiche seulement le nom des apps</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Toujours autorisées : %1$d app · Modifier</item>

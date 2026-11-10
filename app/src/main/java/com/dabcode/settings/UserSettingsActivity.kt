@@ -84,6 +84,7 @@ class UserSettingsActivity : AppCompatActivity() {
                     }
                 ) { innerPadding ->
                     val showHomeStats by settingsViewModel.showHomeStats.collectAsStateWithLifecycle()
+                    val showAppScreenTime by settingsViewModel.showAppScreenTime.collectAsStateWithLifecycle()
                     val notificationDotsEnabled by settingsViewModel.notificationDotsEnabled.collectAsStateWithLifecycle()
                     val reminderSettings by settingsViewModel.reminderSettings.collectAsStateWithLifecycle()
                     val openSingleMatch by settingsViewModel.openSingleMatch.collectAsStateWithLifecycle()
@@ -124,6 +125,8 @@ class UserSettingsActivity : AppCompatActivity() {
                         onFontSizeScaleSelected = { settingsViewModel.updateFontSizeScale(it) },
                         showHomeStats = showHomeStats,
                         onShowHomeStatsToggle = { settingsViewModel.updateShowHomeStats(it) },
+                        showAppScreenTime = showAppScreenTime,
+                        onShowAppScreenTimeToggle = { settingsViewModel.updateShowAppScreenTime(it) },
                         notificationDotsEnabled = notificationDotsEnabled,
                         onNotificationDotsToggle = { settingsViewModel.updateNotificationDotsEnabled(it) },
                         reminderSettings = reminderSettings,
@@ -213,6 +216,8 @@ fun UserSettingsScreen(
     onFontSizeScaleSelected: (String) -> Unit,
     showHomeStats: Boolean = true,
     onShowHomeStatsToggle: (Boolean) -> Unit = {},
+    showAppScreenTime: Boolean = false,
+    onShowAppScreenTimeToggle: (Boolean) -> Unit = {},
     notificationDotsEnabled: Boolean = true,
     onNotificationDotsToggle: (Boolean) -> Unit = {},
     reminderSettings: ReminderSettings = SettingsRepository.DEFAULT_REMINDER_SETTINGS,
@@ -332,6 +337,15 @@ fun UserSettingsScreen(
             ShowHomeStatsToggle(
                 isEnabled = showHomeStats,
                 onToggle = onShowHomeStatsToggle
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            SwitchRow(
+                title = stringResource(R.string.app_time_toggle),
+                description = stringResource(if (showAppScreenTime) R.string.app_time_on_desc else R.string.app_time_off_desc),
+                checked = showAppScreenTime,
+                onToggle = onShowAppScreenTimeToggle
             )
 
             Spacer(modifier = Modifier.height(12.dp))

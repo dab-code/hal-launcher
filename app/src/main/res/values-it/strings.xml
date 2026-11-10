@@ -181,6 +181,9 @@
     <string name="home_stats_toggle">Mostra tempo di utilizzo e sblocchi nella schermata Home</string>
     <string name="home_stats_on_desc">La schermata Home mostra il tempo di utilizzo e gli sblocchi</string>
     <string name="home_stats_off_desc">La schermata Home mostra solo l\'orologio e le tue app</string>
+    <string name="app_time_toggle">Mostra tempo di utilizzo accanto alle app</string>
+    <string name="app_time_on_desc">La schermata Home mostra il tempo di utilizzo di oggi accanto a ogni app</string>
+    <string name="app_time_off_desc">La schermata Home mostra solo i nomi delle app</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Sempre consentite: %1$d app · Modifica</item>

@@ -56,6 +56,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -79,6 +81,7 @@ import com.dabcode.hal.usage.LockdownAppsActivity
 import com.dabcode.hal.focus.focusUntilText
 import com.dabcode.hal.usage.UsageStatsActivity
 import com.dabcode.hal.usage.UsageStatsViewModel
+import com.dabcode.hal.usage.appTimeLabel
 import com.dabcode.hal.usage.formatDuration
 import com.dabcode.hal.usage.formatLimit
 import com.dabcode.hal.usage.rememberDurationUnits
@@ -111,6 +114,7 @@ class MainActivity : AppCompatActivity() {
                 val lockdownThreshold by settingsViewModel.lockdownThresholdMinutes.collectAsStateWithLifecycle()
                 val alwaysAllowed by settingsViewModel.alwaysAllowedPackages.collectAsStateWithLifecycle()
                 val showHomeStats by settingsViewModel.showHomeStats.collectAsStateWithLifecycle()
+                val showAppScreenTime by settingsViewModel.showAppScreenTime.collectAsStateWithLifecycle()
 
                 HomeScreen(
                     mainViewModel = mainViewModel,
@@ -119,7 +123,8 @@ class MainActivity : AppCompatActivity() {
                     isLockdownEnabled = lockdownEnabled,
                     lockdownThresholdMinutes = lockdownThreshold,
                     alwaysAllowed = alwaysAllowed,
-                    showHomeStats = showHomeStats
+                    showHomeStats = showHomeStats,
+                    showAppScreenTime = showAppScreenTime
                 )
 
                 // Dialogs overlay the pager
@@ -297,7 +302,8 @@ fun HomeScreen(
     isLockdownEnabled: Boolean = false,
     lockdownThresholdMinutes: Int = 120,
     alwaysAllowed: Set<String> = emptySet(),
-    showHomeStats: Boolean = true
+    showHomeStats: Boolean = true,
+    showAppScreenTime: Boolean = false
 ) {
     val context = LocalContext.current
     val palette = LocalPalette.current
@@ -306,6 +312,7 @@ fun HomeScreen(
     val currentDate by homeScreenViewModel.currentDate.collectAsStateWithLifecycle()
     val todayScreenTime by usageStatsViewModel.todayScreenTime.collectAsStateWithLifecycle()
     val todayPickups by usageStatsViewModel.todayPickupCount.collectAsStateWithLifecycle()
+    val todayPerApp by usageStatsViewModel.todayPerApp.collectAsStateWithLifecycle()
     val weekSoFar by usageStatsViewModel.weekSoFar.collectAsStateWithLifecycle()
     val hasUsagePermission by usageStatsViewModel.hasPermission.collectAsStateWithLifecycle()
     val activeFocus by focusModeViewModel.activeFocus.collectAsStateWithLifecycle()
@@ -460,8 +467,8 @@ fun HomeScreen(
                     .padding(horizontal = 8.dp)
                     .clickable { if (hasUsagePermission) openUsageStats() else openAccessSettings() }
             )
-            if (!showHomeStats) {
-                // The user hid the tiles. Show no access link and no weekly count.
+            if (!showHomeStats && !showAppScreenTime) {
+                // The user hid the tiles and the app times. Show no access link and no weekly count.
             } else if (!hasUsagePermission) {
                 Text(
                     text = stringResource(if (lockdownNeedsPermission) R.string.home_limit_needs_access else R.string.home_grant_access),
@@ -473,7 +480,7 @@ fun HomeScreen(
                         .clickable { openAccessSettings() },
                     textAlign = textAlign
                 )
-            } else if (isLockdownEnabled && weekSoFar.isNotEmpty()) {
+            } else if (showHomeStats && isLockdownEnabled && weekSoFar.isNotEmpty()) {
                 val underLimit = underLimitDays(weekSoFar, lockdownThresholdMinutes)
                 // A day with no usage data does not count.
                 val daysWithData = underLimit.count { it != null }
@@ -540,6 +547,7 @@ fun HomeScreen(
                         AppListItem(
                             appInfo = app,
                             textAlign = textAlign,
+                            timeLabel = if (showAppScreenTime) appTimeLabel(todayPerApp[app.packageName] ?: 0L, units) else null,
                             isLocked = lockReasonOf(app.packageName) != null,
                             onLongClick = { appToRename = app }
                         ) {
@@ -649,6 +657,7 @@ fun HomeScreen(
 fun AppListItem(
     appInfo: AppInfo,
     textAlign: TextAlign,
+    timeLabel: String? = null, // The screen time of today, for example "42m". Null shows no label.
     isLocked: Boolean = false, // A locked app shows muted, with a lock mark. A tap still calls onAppClick.
     onLongClick: () -> Unit = {}, // A long press does not open the app
     onAppClick: () -> Unit
@@ -663,32 +672,47 @@ fun AppListItem(
             )
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {
-        // A locked app shows in the muted color, with a small lock mark after the name.
+        // The time label is at the outer edge: at the end, or at the start for the END alignment.
+        // In the centre, an invisible copy at the start keeps the name in the centre.
+        // So the label does not move the name.
+        val timeAtStart = textAlign == TextAlign.End
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = when (textAlign) {
-                TextAlign.Start -> Arrangement.Start
-                TextAlign.End -> Arrangement.End
-                else -> Arrangement.Center
-            },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = styledAppName(appInfo.appName),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = textAlign,
-                modifier = Modifier.weight(1f, fill = false),
-                maxLines = 2,
-                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                color = if (isLocked) palette.muted else Color.Unspecified
-            )
-            if (isLocked) {
-                Icon(
-                    imageVector = Icons.Rounded.Lock,
-                    contentDescription = stringResource(R.string.cd_locked),
-                    tint = palette.muted,
-                    modifier = Modifier.padding(start = 6.dp).size(14.dp)
+            if (timeLabel != null && (timeAtStart || textAlign == TextAlign.Center)) {
+                AppTimeLabel(timeLabel, visible = timeAtStart, modifier = Modifier.padding(end = 12.dp))
+            }
+            // A locked app shows in the muted color, with a small lock mark after the name.
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = when (textAlign) {
+                    TextAlign.Start -> Arrangement.Start
+                    TextAlign.End -> Arrangement.End
+                    else -> Arrangement.Center
+                },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = styledAppName(appInfo.appName),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = textAlign,
+                    modifier = Modifier.weight(1f, fill = false),
+                    maxLines = 2,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                    color = if (isLocked) palette.muted else Color.Unspecified
                 )
+                if (isLocked) {
+                    Icon(
+                        imageVector = Icons.Rounded.Lock,
+                        contentDescription = stringResource(R.string.cd_locked),
+                        tint = palette.muted,
+                        modifier = Modifier.padding(start = 6.dp).size(14.dp)
+                    )
+                }
+            }
+            if (timeLabel != null && !timeAtStart) {
+                AppTimeLabel(timeLabel, visible = true, modifier = Modifier.padding(start = 12.dp))
             }
         }
 
@@ -702,6 +726,18 @@ fun AppListItem(
             )
         }
     }
+}
+
+/** The quiet screen time label of an app row. An invisible label only takes its space. */
+@Composable
+private fun AppTimeLabel(text: String, visible: Boolean, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodySmall,
+        color = LocalPalette.current.muted,
+        maxLines = 1,
+        modifier = if (visible) modifier else modifier.alpha(0f).clearAndSetSemantics {}
+    )
 }
 
 /**

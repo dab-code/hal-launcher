@@ -179,6 +179,9 @@
     <string name="home_stats_toggle">Visa skärmtid och upplåsningar på hemskärmen</string>
     <string name="home_stats_on_desc">Hemskärmen visar skärmtid och upplåsningar</string>
     <string name="home_stats_off_desc">Hemskärmen visar bara klockan och dina appar</string>
+    <string name="app_time_toggle">Visa skärmtid bredvid appar</string>
+    <string name="app_time_on_desc">Hemskärmen visar dagens skärmtid bredvid varje app</string>
+    <string name="app_time_off_desc">Hemskärmen visar bara appnamnen</string>
     <string name="stat_label_period">%1$s · %2$s</string>
     <plurals name="focus_now_always_allowed">
         <item quantity="one">Alltid tillåtna: %1$d app · Redigera</item>
