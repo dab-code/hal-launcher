@@ -235,11 +235,22 @@ fun ManageAppsScreen(
         focusModeViewModel = focusModeViewModel,
         onClose = onCloseToHome
     )
+    // The same open for the single search result, but "Close" stays in All Apps.
+    // The query and the result stay, so the user can long-press the result (rename, uninstall).
+    val requestOpenSingleMatch = rememberGuardedOpen(
+        pauseBeforeOpen = pauseBeforeOpen,
+        pauseCounts = pauseCounts,
+        onPauseOpen = onPauseOpen,
+        lockdownActive = lockdownActive,
+        alwaysAllowed = alwaysAllowed,
+        focusModeViewModel = focusModeViewModel,
+        onClose = {}
+    )
 
     // With the setting on, one search result opens at once, through the lock rules and the pause.
-    // The effect runs only when the query changes, so a return to this screen does not open the app again.
+    // The effect runs only when the query changes, so a return to this screen or a "Close" does not open the app again.
     LaunchedEffect(searchQuery) {
-        singleMatchToOpen(openSingleMatch, searchQuery, filteredApps)?.let(requestOpen)
+        singleMatchToOpen(openSingleMatch, searchQuery, filteredApps)?.let(requestOpenSingleMatch)
     }
 
     // Focus the search field and show the keyboard when the screen opens.
