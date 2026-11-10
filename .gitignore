@@ -29,3 +29,6 @@ signing.properties
 *.apk
 *.aab
 mapping.txt
+
+# IDE (personal paths and device serials)
+/.idea/
