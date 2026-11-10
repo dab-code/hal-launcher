@@ -700,16 +700,17 @@ fun AppListItem(
             )
             .padding(horizontal = 8.dp, vertical = 12.dp)
     ) {
-        // The time label is at the outer edge: at the end, or at the start for the END alignment.
-        // In the centre, an invisible copy at the start keeps the name in the centre.
-        // So the label does not move the name.
-        val timeAtStart = textAlign == TextAlign.End
+        // The time label sits next to the name: after it (START) or before it (END).
+        // In the centre, the label is at the end edge. An invisible copy at the start keeps the name centred.
+        // The label never changes the position of the name. A long name wraps instead.
+        val isCenter = textAlign == TextAlign.Center
+        val labelGap = 10.dp
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (timeLabel != null && (timeAtStart || textAlign == TextAlign.Center)) {
-                AppTimeLabel(timeLabel, visible = timeAtStart, modifier = Modifier.padding(end = 12.dp))
+            if (timeLabel != null && isCenter) {
+                AppTimeLabel(timeLabel, visible = false, modifier = Modifier.padding(end = 12.dp))
             }
             // A locked app shows in the muted color, with a small lock mark after the name.
             Row(
@@ -721,11 +722,14 @@ fun AppListItem(
                 },
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                if (timeLabel != null && textAlign == TextAlign.End) {
+                    AppTimeLabel(timeLabel, visible = true, modifier = Modifier.padding(end = labelGap).alignByBaseline())
+                }
                 Text(
                     text = styledAppName(appInfo.appName),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = textAlign,
-                    modifier = Modifier.weight(1f, fill = false),
+                    modifier = Modifier.weight(1f, fill = false).alignByBaseline(),
                     maxLines = 2,
                     overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
                     color = if (isLocked) palette.muted else Color.Unspecified
@@ -738,8 +742,11 @@ fun AppListItem(
                         modifier = Modifier.padding(start = 6.dp).size(14.dp)
                     )
                 }
+                if (timeLabel != null && textAlign == TextAlign.Start) {
+                    AppTimeLabel(timeLabel, visible = true, modifier = Modifier.padding(start = labelGap).alignByBaseline())
+                }
             }
-            if (timeLabel != null && !timeAtStart) {
+            if (timeLabel != null && isCenter) {
                 AppTimeLabel(timeLabel, visible = true, modifier = Modifier.padding(start = 12.dp))
             }
         }
