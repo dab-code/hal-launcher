@@ -12,6 +12,13 @@ const val PAUSE_MAX_SECONDS = 60
 fun pauseSeconds(opensToday: Int): Int =
     minOf(PAUSE_STEP_SECONDS * (opensToday.coerceAtLeast(0) + 1), PAUSE_MAX_SECONDS)
 
+/**
+ * Return the part of the ring that is full, from 0 to 1, after [elapsedNanos] of a [seconds] pause.
+ * The value comes from the real time, so the pause takes its full time also with "Remove animations".
+ */
+fun ringProgress(elapsedNanos: Long, seconds: Int): Float =
+    if (seconds <= 0) 1f else (elapsedNanos / (seconds * 1_000_000_000.0)).toFloat().coerceIn(0f, 1f)
+
 /** Return true when the app needs the pause. An app on the home screen opens at once. */
 fun needsPause(pauseEnabled: Boolean, isOnHomeScreen: Boolean): Boolean = pauseEnabled && !isOnHomeScreen
 

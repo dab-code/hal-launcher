@@ -24,7 +24,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
@@ -110,13 +114,18 @@ fun RingDialog(
     onAction: () -> Unit
 ) {
     val p = LocalPalette.current
-    val progress = remember { Animatable(0f) }
+    // The ring follows the real time from the frame clock, not an animation. An animation gets shorter with
+    // the system setting "Remove animations" (duration scale 0), and then the pause would end at once.
+    var progress by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(seconds) {
-        progress.snapTo(0f)
-        progress.animateTo(1f, tween(durationMillis = seconds * 1000, easing = LinearEasing))
+        progress = 0f
+        val start = withFrameNanos { it }
+        while (progress < 1f) {
+            progress = withFrameNanos { ringProgress(it - start, seconds) }
+        }
     }
-    val isDone = progress.value >= 1f
-    val remaining = ceil((1f - progress.value) * seconds).toInt()
+    val isDone = progress >= 1f
+    val remaining = ceil((1f - progress) * seconds).toInt()
 
     Dialog(onDismissRequest = onClose, properties = DialogProperties(dismissOnClickOutside = false)) {
         Surface(
@@ -140,7 +149,7 @@ fun RingDialog(
                 Spacer(Modifier.height(24.dp))
                 Box(Modifier.size(140.dp), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
-                        progress = { progress.value },
+                        progress = { progress },
                         modifier = Modifier.fillMaxSize(),
                         color = p.ink,
                         trackColor = p.empty,

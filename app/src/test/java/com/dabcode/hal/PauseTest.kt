@@ -57,4 +57,27 @@ class PauseTest {
         cal.add(Calendar.HOUR_OF_DAY, 1)
         assertEquals(dayKey(cal), dayKey((cal.clone() as Calendar).apply { set(Calendar.HOUR_OF_DAY, 0) }))
     }
+
+    @Test
+    fun ringProgress_followsRealTime() {
+        val second = 1_000_000_000L
+        assertEquals(0f, ringProgress(0, 5), 0f)
+        assertEquals(0.5f, ringProgress(5 * second / 2, 5), 0.0001f)
+        // The ring is not full 1 ms before the end, so "Open" stays disabled until the full time.
+        assertTrue(ringProgress(5 * second - 1_000_000, 5) < 1f)
+        assertEquals(1f, ringProgress(5 * second, 5), 0f)
+    }
+
+    @Test
+    fun ringProgress_staysInRange() {
+        assertEquals(0f, ringProgress(-1, 5), 0f)
+        assertEquals(1f, ringProgress(60L * 1_000_000_000L, 5), 0f)
+        assertEquals(1f, ringProgress(0, 0), 0f)
+    }
+
+    @Test
+    fun ringProgress_longPause() {
+        // 60 s: no overflow in the nanoseconds.
+        assertEquals(0.5f, ringProgress(30L * 1_000_000_000L, 60), 0.0001f)
+    }
 }
