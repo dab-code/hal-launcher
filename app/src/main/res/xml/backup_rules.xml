@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Backup rules for Android 11 and lower.
+   Back up the HAL settings (DataStore files and the enabled-app SharedPreferences).
+   Do not back up:
+   - quiet_notifications.json: the texts of the notifications of other apps.
+   - hal_reminder_session.xml: the state of the usage reminder session.
+   - hal_break_end.xml: HAL asked for the notification permission. A new device asks one time again.
+   The break state is a key in the settings DataStore. It ends after 5 min, so it stays in the backup.
+   See https://developer.android.com/guide/topics/data/autobackup
+-->
+<full-backup-content>
+    <exclude domain="file" path="quiet_notifications.json" />
+    <exclude domain="sharedpref" path="hal_reminder_session.xml" />
+    <exclude domain="sharedpref" path="hal_break_end.xml" />
+</full-backup-content>

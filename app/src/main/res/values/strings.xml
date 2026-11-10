@@ -1,0 +1,266 @@
+<resources>
+    <!-- The app name is not translated. -->
+    <string name="app_name" translatable="false">HAL</string>
+
+    <!-- Screen titles and activity labels -->
+    <string name="title_all_apps">All Apps</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_user_settings">User Settings</string>
+    <string name="title_focus_mode">Focus Mode</string>
+    <string name="title_essential_apps">Essential Apps</string>
+    <string name="title_screen_time">Screen Time</string>
+    <string name="label_notification_listener">HAL Notification Listener</string>
+
+    <!-- Common actions and content descriptions -->
+    <string name="action_open_settings">Open Settings</string>
+    <string name="action_later">Later</string>
+    <string name="action_maybe_later">Maybe Later</string>
+    <string name="action_save">Save</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_close">Close</string>
+    <string name="action_create">Create</string>
+    <string name="action_done">Done</string>
+    <string name="action_enable_apps">Enable apps</string>
+    <string name="action_grant_permission">Grant Permission</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_menu">Menu</string>
+    <string name="cd_locked">Locked</string>
+    <string name="cd_delete">Delete</string>
+    <string name="cd_add_profile">Add Profile</string>
+    <string name="cd_open_user_settings">Open User Settings</string>
+
+    <!-- Home screen -->
+    <string name="toast_dots_need_permission">Notification dots will not work without permission.</string>
+    <string name="dialog_permission_title">Permission Required</string>
+    <string name="dialog_permission_text">To show notification dots, HAL needs access to your notifications. Please enable it in the next screen.</string>
+    <string name="dialog_default_launcher_title">Set HAL as Default Launcher?</string>
+    <string name="dialog_default_launcher_text">To provide the best experience, please set HAL as your default home screen.</string>
+    <string name="dialog_rename_title">Rename app</string>
+    <string name="label_name">Name</string>
+    <string name="rename_original_name">Original name: %1$s</string>
+    <!-- %1$s: focus profile name. %2$s: end time, for example 17:00. -->
+    <string name="home_focus_banner">Focus · %1$s · until %2$s</string>
+    <string name="stat_pickups">Pickups</string>
+    <string name="stat_screen_time">Screen time</string>
+    <string name="stat_today">today</string>
+    <!-- %1$s: the daily limit, for example 2h. -->
+    <string name="stat_of_limit">of %1$s</string>
+    <string name="home_lockdown_needs_access">Lockdown needs usage access · Grant access</string>
+    <string name="home_grant_access">Grant access</string>
+    <!-- %1$d: days under the limit. %2$d: days with data. The quantity is %2$d, so the noun must agree with %2$d. -->
+    <plurals name="home_under_limit_days">
+        <item quantity="one">Under your limit %1$d of %2$d day</item>
+        <item quantity="other">Under your limit %1$d of %2$d days</item>
+    </plurals>
+    <string name="home_loading_apps">Loading apps…</string>
+    <string name="home_no_apps">No apps have been enabled.</string>
+
+    <!-- Lock messages -->
+    <string name="lock_until_midnight">Locked until midnight.</string>
+    <!-- %1$s: focus profile name. %2$s: end time. -->
+    <string name="lock_by_profile">Locked by %1$s until %2$s.</string>
+    <string name="lock_until_focus_ends">Locked until focus mode ends.</string>
+    <string name="lock_scope">Only HAL locks this app. It is not blocked in other places.</string>
+    <!-- %1$s: the lock text. %2$s: lock_scope. -->
+    <string name="lock_with_scope">%1$s %2$s</string>
+
+    <!-- Pause before an app opens -->
+    <string name="pause_take_breath">Take a breath first.</string>
+    <!-- %1$s: app name. -->
+    <string name="pause_open_app">Open %1$s</string>
+
+    <!-- App launch -->
+    <string name="toast_could_not_launch">Could not launch app: %1$s</string>
+    <string name="toast_error_launching">Error launching app: %1$s</string>
+    <string name="toast_enable_notification_access">Please enable notification access for HAL.</string>
+
+    <!-- All Apps -->
+    <string name="search_apps">Search apps</string>
+    <string name="no_apps_found">No apps found…</string>
+
+    <!-- Screen time -->
+    <string name="usage_permission_needed">Usage access permission is required to show screen time data.</string>
+    <string name="usage_today">Today</string>
+    <string name="usage_this_week">This Week</string>
+    <!-- %1$s: arrow up or down. %2$d: change in percent. -->
+    <string name="usage_vs_last_week">%1$s %2$d%% vs same day last week</string>
+    <!-- Short duration units. %1$d: hours. %2$d: minutes. -->
+    <string name="duration_hours_minutes">%1$dh %2$dm</string>
+    <string name="duration_hours">%1$dh</string>
+    <string name="duration_minutes">%1$dm</string>
+    <!-- The bar label. %2$02d: minutes with two digits. -->
+    <string name="duration_compact">%1$d:%2$02dh</string>
+
+    <!-- Settings -->
+    <string name="section_appearance">Appearance</string>
+    <string name="section_appearance_subtitle">Customize how HAL looks</string>
+    <string name="label_style">Style</string>
+    <string name="label_font_size">Font Size</string>
+    <string name="section_layout">Layout</string>
+    <string name="section_layout_subtitle">Control how your home screen is arranged</string>
+    <string name="section_mindful">Mindful Use</string>
+    <string name="section_mindful_subtitle">Tools to help you stay intentional</string>
+    <string name="focus_mode_subtitle">Schedule times when only certain apps are accessible</string>
+    <string name="essential_apps_subtitle">Choose which apps stay accessible during lockdown</string>
+    <string name="section_insights">Insights</string>
+    <string name="section_insights_subtitle">Understand your phone usage</string>
+    <string name="screen_time_subtitle">View daily and weekly usage stats</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="style_paper">Paper</string>
+    <string name="style_mono">Mono</string>
+    <string name="style_quiet">Quiet</string>
+    <string name="font_small">Small</string>
+    <string name="font_medium">Medium</string>
+    <string name="font_large">Large</string>
+    <string name="pause_toggle">Pause before opening apps</string>
+    <string name="pause_on_desc">Apps not on home open after a short pause</string>
+    <string name="pause_off_desc">All apps open at once</string>
+    <string name="align_label">App list item alignment</string>
+    <string name="align_left">Left</string>
+    <string name="align_center">Center</string>
+    <string name="align_right">Right</string>
+    <string name="dots_toggle">Notification dots</string>
+    <string name="dots_on_desc">A dot shows next to apps with notifications</string>
+    <string name="dots_off_desc">No dots and no notification access</string>
+    <string name="lockdown_toggle">Lockdown Mode</string>
+    <string name="lockdown_on_desc">Non-essential apps lock when limit is reached.</string>
+    <string name="lockdown_off_desc">No usage-based locking.</string>
+    <string name="lockdown_limit_label">Daily usage limit (minutes)</string>
+    <plurals name="lockdown_limit_desc">
+        <item quantity="one">Apps will be locked after %1$d minute of daily screen time.</item>
+        <item quantity="other">Apps will be locked after %1$d minutes of daily screen time.</item>
+    </plurals>
+    <string name="section_language">Language</string>
+    <string name="section_language_subtitle">Choose the language of HAL</string>
+    <string name="label_app_language">App language</string>
+    <string name="language_system_default">System default</string>
+
+    <!-- Focus Mode -->
+    <string name="focus_empty">No focus profiles yet.</string>
+    <string name="focus_empty_hint">Create a profile to schedule times when only certain apps are accessible.</string>
+    <!-- %1$s: start time. %2$s: end time. -->
+    <string name="focus_time_range">%1$s – %2$s</string>
+    <string name="focus_active_now">Active now</string>
+    <string name="focus_new_profile">New Focus Profile</string>
+    <string name="focus_profile_name">Profile name</string>
+    <string name="focus_start_time">Start time</string>
+    <string name="focus_end_time">End time</string>
+    <string name="focus_hour">Hour</string>
+    <string name="focus_minute">Min</string>
+    <string name="focus_days">Days</string>
+    <!-- The count is not a plural resource. Do not put a word that agrees with the count after it. -->
+    <string name="focus_allowed_apps">Allowed apps: %1$d selected</string>
+    <string name="focus_choose_apps">Choose apps</string>
+    <string name="focus_select_allowed_apps">Select allowed apps</string>
+
+    <!-- Essential Apps -->
+    <string name="essential_apps_hint">Selected apps will remain accessible when your daily usage limit is reached.</string>
+
+    <!-- Focus round 2 (one easy Focus). New keys only. -->
+    <string name="focus_word">Focus</string>
+    <string name="section_focus_subtitle">Fewer distractions, at the times you choose</string>
+    <string name="focus_settings_subtitle">Lock distracting apps at the times you choose</string>
+    <string name="focus_screen_subtitle">At these times, only the always allowed apps open.</string>
+    <string name="focus_preset_work">Work</string>
+    <string name="focus_preset_evening">Evening</string>
+    <string name="focus_preset_sleep">Sleep</string>
+    <string name="focus_new">New Focus</string>
+    <string name="focus_name_optional">Name (optional)</string>
+    <string name="focus_every_day">Every day</string>
+    <string name="focus_same_times">Start and end must be different.</string>
+    <string name="focus_turn_on">Turn on</string>
+    <string name="focus_turn_off">Turn off</string>
+    <string name="focus_turn_off_title">Turn off this Focus?</string>
+    <string name="loosen_message">Take a breath first. Then decide.</string>
+    <string name="focus_delete">Delete</string>
+    <string name="focus_delete_title">Delete this Focus?</string>
+    <string name="focus_scope_note">Only HAL locks apps. Notifications, recent apps and other launchers can still open them.</string>
+    <string name="focus_now_title">Focus now</string>
+    <string name="focus_until_ellipsis">Until…</string>
+    <!-- %1$s: end time, for example 17:00. -->
+    <string name="focus_until_time">until %1$s</string>
+    <string name="focus_now_hint">Always allowed apps stay open.</string>
+    <string name="focus_end_now">End now</string>
+    <string name="focus_end_now_title">End this Focus now?</string>
+    <string name="focus_end_hint">Only this session ends. The schedule stays on.</string>
+    <string name="focus_settings_link">Focus settings</string>
+    <string name="lock_daily_limit">Daily limit reached. Open again tomorrow.</string>
+    <!-- The lock text and the home banner. %1$s: end time. -->
+    <string name="lock_focus_until">Focus until %1$s</string>
+    <!-- %1$s: the Focus name, for example Work. %2$s: end time. -->
+    <string name="lock_named_focus_until">%1$s Focus until %2$s</string>
+    <!-- %1$d: the break length in minutes (5). -->
+    <string name="lock_open_for_break">Open for %1$d min</string>
+    <string name="always_allowed_title">Always allowed</string>
+    <!-- %1$d: the number of apps. Do not put a word that agrees with the count after it. -->
+    <string name="always_allowed_count">Always allowed (%1$d)</string>
+    <string name="always_allowed_subtitle">Focus and the daily limit never lock these apps</string>
+    <string name="always_allowed_hint">Focus and the daily limit never lock these apps. Phone and Settings always open.</string>
+    <string name="always_allowed_shared">Always allowed (shared with Focus)</string>
+    <string name="limit_title">Daily limit</string>
+    <string name="limit_off">Off</string>
+    <!-- %1$s: a duration, for example 3h 10m. -->
+    <string name="limit_off_average">Off · Your average: %1$s</string>
+    <!-- %1$s: the daily limit, for example 2h 15m. -->
+    <string name="limit_on_summary">%1$s a day</string>
+    <string name="limit_needs_access">HAL needs usage access to count screen time.</string>
+    <string name="action_allow">Allow</string>
+    <!-- %1$s: a duration. -->
+    <string name="limit_average">Your average: %1$s</string>
+    <!-- %1$s: a duration. -->
+    <string name="limit_suggested">Suggested limit: %1$s</string>
+    <!-- %1$s: the suggested limit. -->
+    <string name="limit_use">Use %1$s</string>
+    <string name="limit_turn_off">Turn off the daily limit</string>
+    <string name="limit_loosen_title">Change the daily limit?</string>
+    <string name="limit_loosen_action">Change</string>
+    <!-- %1$s: the average. %2$s: the suggested limit. -->
+    <string name="limit_suggestion_card">Your average is %1$s a day. A daily limit of %2$s can help.</string>
+    <string name="limit_suggestion_action">Set a daily limit</string>
+    <string name="home_limit_needs_access">Daily limit needs usage access · Grant access</string>
+    <string name="home_stats_toggle">Show screen time and pickups on home</string>
+    <string name="home_stats_on_desc">Home shows screen time and pickups</string>
+    <string name="home_stats_off_desc">Home shows only the clock and your apps</string>
+    <!-- The home tile label. %1$s: Pickups or Screen time. %2$s: stat_today. -->
+    <string name="stat_label_period">%1$s · %2$s</string>
+    <!-- The line in the Focus now sheet. %1$d: the number of always allowed apps. -->
+    <plurals name="focus_now_always_allowed">
+        <item quantity="one">Always allowed: %1$d app · Edit</item>
+        <item quantity="other">Always allowed: %1$d apps · Edit</item>
+    </plurals>
+    <!-- Round 3: usage reminders, hide apps, open on one search match. -->
+    <string name="reminders_toggle">Usage reminders</string>
+    <string name="reminders_desc">A silent pop-up while you use an app</string>
+    <string name="reminders_interval_label">Remind me every</string>
+    <string name="reminders_permission_denied">Allow notifications to get usage reminders.</string>
+    <!-- The usage reminder. %1$s: the app name. %2$s: the session time, for example 15m. -->
+    <string name="reminder_text">%1$s: %2$s</string>
+    <string name="action_hide">Hide</string>
+    <string name="action_unhide">Unhide</string>
+    <string name="hidden_apps_title">Hidden apps</string>
+    <string name="hidden_apps_desc">Apps that show only when you search</string>
+    <string name="hidden_apps_empty">No hidden apps. Long-press an app in All Apps to hide it.</string>
+    <string name="single_match_toggle">Open app when search finds one match</string>
+    <string name="single_match_desc">Opens the app when only one app matches</string>
+    <!-- Debug builds only. Not translated. -->
+    <!-- Round 4: quiet apps and the one review request. -->
+    <string name="quiet_apps_title">Quiet apps</string>
+    <string name="quiet_apps_row_desc">Their notifications wait on the usage screen</string>
+    <string name="quiet_apps_desc">HAL takes the notifications of these apps out of the notification bar. Find them on the screen time screen, under Quiet notifications. Calls, alarms, media and ongoing notifications stay.</string>
+    <string name="quiet_sound_note">Android plays the sound before HAL can remove the notification. Turn off the sound in Android settings to make the app fully quiet.</string>
+    <string name="quiet_needs_access">Quiet apps need notification access · Grant access</string>
+    <string name="quiet_sound_settings">Sound settings</string>
+    <string name="quiet_notifications_title">Quiet notifications</string>
+    <string name="quiet_empty">No quiet notifications</string>
+    <string name="quiet_clear_all">Clear all</string>
+    <string name="review_prompt">Rate HAL on Google Play</string>
+    <string name="cd_more_options">More options</string>
+    <!-- Settings descriptions: one short line under each row. -->
+    <string name="reminders_note">Only for apps that you open from HAL. Needs usage access.</string>
+    <string name="align_desc">Where app names show on the home screen</string>
+    <!-- The pop-up at the end of a break ("Open for 5 min"). %1$s: the app name. -->
+    <string name="break_end_title">%1$s: break is over</string>
+    <string name="break_end_text">Tap to go back to HAL.</string>
+</resources>

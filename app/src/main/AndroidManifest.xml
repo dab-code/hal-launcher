@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" package="com.dabcode.hal">
+
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <!-- Usage reminders. HAL asks for it only when the user turns the reminders on. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <!-- The home-screen apps, to leave them out of the usage list. -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
+        </intent>
+        <!-- The default apps for the "Always allowed" list (see DefaultApps.kt). -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="smsto" />
+        </intent>
+        <intent>
+            <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SHOW_ALARMS" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="geo" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_CALENDAR" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.APP_MUSIC" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
+        android:name=".HALApplication"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MinimalistLauncher"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MinimalistLauncher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ManageAppsActivity"
+            android:label="@string/title_all_apps"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:theme="@style/Theme.MinimalistLauncher.Child"/>
+
+        <activity
+            android:name="com.dabcode.settings.UserSettingsActivity"
+            android:label="@string/title_settings"
+            android:exported="false"
+            android:theme="@style/Theme.MinimalistLauncher.Child"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".focus.FocusModeActivity"
+            android:label="@string/focus_word"
+            android:exported="false"
+            android:theme="@style/Theme.MinimalistLauncher.Child"/>
+
+        <activity
+            android:name=".usage.LockdownAppsActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/always_allowed_title"
+            android:exported="false"
+            android:theme="@style/Theme.MinimalistLauncher.Child"/>
+
+        <activity
+            android:name=".quiet.QuietAppsActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/quiet_apps_title"
+            android:exported="false"
+            android:theme="@style/Theme.MinimalistLauncher.Child"/>
+
+        <activity
+            android:name=".usage.UsageStatsActivity"
+            android:label="@string/title_screen_time"
+            android:exported="false"
+            android:theme="@style/Theme.MinimalistLauncher.Child"/>
+
+        <service
+            android:name=".AppNotificationListenerService"
+            android:label="@string/label_notification_listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- The alarm of the usage reminders. -->
+        <receiver
+            android:name=".reminders.ReminderReceiver"
+            android:exported="false" />
+
+        <!-- The alarm at the end of a break ("Open for 5 min"). -->
+        <receiver
+            android:name=".reminders.BreakEndReceiver"
+            android:exported="false" />
+
+        <!-- Before Android 13, AppCompat stores the app language here. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
+
+    </application>
+
+</manifest>

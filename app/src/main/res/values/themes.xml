@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- AppCompat themes: the activities are AppCompatActivity (for the per-app language before Android 13). -->
+    <!-- The system bars are transparent (enableHalEdgeToEdge). The window background shows through them. -->
+    <style name="Theme.MinimalistLauncher" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">#1b1a18</item>
+        <!-- The status bar of the start window before Android 15. -->
+        <item name="colorPrimaryDark">#1b1a18</item>
+    </style>
+
+    <!-- Transparent window: parent activity shows through until our code sets the real background -->
+    <style name="Theme.MinimalistLauncher.Child" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.MinimalistLauncher.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">#1b1a18</item>
+    </style>
+
+    <style name="Theme.MinimalistLauncher.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">#f3efe6</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+    </style>
+</resources>
