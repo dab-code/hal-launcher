@@ -88,6 +88,13 @@ class SettingsViewModel(
         viewModelScope.launch { repository.updateShowHomeStats(show) }
     }
 
+    val showAppScreenTime: StateFlow<Boolean> = repository.showAppScreenTime
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.DEFAULT_SHOW_APP_SCREEN_TIME)
+
+    fun updateShowAppScreenTime(show: Boolean) {
+        viewModelScope.launch { repository.updateShowAppScreenTime(show) }
+    }
+
     val notificationDotsEnabled: StateFlow<Boolean> = repository.notificationDotsEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.DEFAULT_NOTIFICATION_DOTS_ENABLED)
 

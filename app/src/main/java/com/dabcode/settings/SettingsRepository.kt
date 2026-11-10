@@ -93,6 +93,8 @@ class SettingsRepository(private val context: Context) {
         val FIRST_SEEN_DAY = longPreferencesKey("first_seen_day")
         // True after the user taps the review line or its close button. Then it never shows again.
         val REVIEW_PROMPT_DONE = booleanPreferencesKey("review_prompt_done")
+        // Show the screen time of today next to each app on the home screen.
+        val SHOW_APP_SCREEN_TIME = booleanPreferencesKey("show_app_screen_time")
     }
 
     // Default values
@@ -106,6 +108,7 @@ class SettingsRepository(private val context: Context) {
         const val DEFAULT_LOCKDOWN_THRESHOLD_MINUTES = 120
         const val DEFAULT_NOTIFICATION_DOTS_ENABLED = true
         const val DEFAULT_SHOW_HOME_STATS = true
+        const val DEFAULT_SHOW_APP_SCREEN_TIME = false
         const val DEFAULT_OPEN_SINGLE_MATCH = false
         val DEFAULT_REMINDER_SETTINGS = ReminderSettings(enabled = false, minutes = DEFAULT_REMINDER_MINUTES)
     }
@@ -198,6 +201,13 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun updateShowHomeStats(show: Boolean) {
         dataStore.edit { it[PreferencesKeys.SHOW_HOME_STATS] = show }
+    }
+
+    val showAppScreenTime: Flow<Boolean> =
+        setting { it[PreferencesKeys.SHOW_APP_SCREEN_TIME] ?: DEFAULT_SHOW_APP_SCREEN_TIME }
+
+    suspend fun updateShowAppScreenTime(show: Boolean) {
+        dataStore.edit { it[PreferencesKeys.SHOW_APP_SCREEN_TIME] = show }
     }
 
     // Default launcher prompt
