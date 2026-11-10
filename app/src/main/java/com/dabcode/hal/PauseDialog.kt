@@ -1,7 +1,10 @@
 package com.dabcode.hal
 
 import androidx.compose.animation.core.Animatable
+import android.provider.Settings
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.foundation.Canvas
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
@@ -24,6 +27,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -130,11 +146,11 @@ fun RingDialog(
                         trackColor = p.empty,
                         strokeWidth = 6.dp
                     )
-                    Text(
-                        if (isDone) "" else "$remaining",
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = p.muted
-                    )
+                    if (isDone) {
+                        UnlockMark(color = p.ink)
+                    } else {
+                        Text("$remaining", style = MaterialTheme.typography.headlineMedium, color = p.muted)
+                    }
                 }
                 Spacer(Modifier.height(24.dp))
                 Button(
@@ -151,6 +167,61 @@ fun RingDialog(
                     Text(actionLabel, textAlign = TextAlign.Center)
                 }
             }
+        }
+    }
+}
+
+/**
+ * A small lock that opens one time. First the closed lock fades in (450 ms). Then the shackle lifts and
+ * turns open (600 ms, a gentle ease, no bounce). Then the open lock stays.
+ * With "Remove animations" in the system settings, the open lock shows at once.
+ */
+@Composable
+fun UnlockMark(color: Color, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val alpha = remember { Animatable(0f) }
+    val open = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        val scale = Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
+        if (scale == 0f) {
+            alpha.snapTo(1f)
+            open.snapTo(1f)
+        } else {
+            alpha.animateTo(1f, tween(durationMillis = 450, easing = LinearEasing))
+            open.animateTo(1f, tween(durationMillis = 600, easing = FastOutSlowInEasing))
+        }
+    }
+    Canvas(modifier.size(width = 24.dp, height = 30.dp).graphicsLayer { this.alpha = alpha.value }) {
+        val stroke = 2.5.dp.toPx()
+        val bodyTop = size.height * 0.48f
+        val bodyLeft = stroke / 2
+        val bodyRight = size.width - stroke / 2
+        // The body: an outline with round corners.
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(bodyLeft, bodyTop),
+            size = Size(bodyRight - bodyLeft, size.height - bodyTop - stroke / 2),
+            cornerRadius = CornerRadius(3.dp.toPx()),
+            style = Stroke(stroke)
+        )
+        // The shackle: a U on the body. Open lifts it and turns it on the right leg.
+        val legLeft = size.width * 0.25f
+        val legRight = size.width * 0.75f
+        val radius = (legRight - legLeft) / 2
+        val legTop = bodyTop - size.height * 0.16f
+        val shackle = Path().apply {
+            moveTo(legLeft, bodyTop)
+            lineTo(legLeft, legTop)
+            arcTo(Rect(legLeft, legTop - radius, legRight, legTop + radius), 180f, 180f, false)
+            lineTo(legRight, bodyTop)
+        }
+        val t = open.value
+        val lift = 4.dp.toPx() * t
+        withTransform({
+            translate(top = -lift)
+            rotate(degrees = 30f * t, pivot = Offset(legRight, bodyTop))
+        }) {
+            drawPath(shackle, color = color, style = Stroke(stroke, cap = StrokeCap.Round))
         }
     }
 }
