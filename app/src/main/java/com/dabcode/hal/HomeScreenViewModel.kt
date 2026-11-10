@@ -19,13 +19,25 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.dabcode.settings.SettingsRepository
 import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private fun getCurrentTime(): String {
+/**
+ * The time now in the [clockFormat] of the settings. "auto" is the short time format of the language.
+ * "12h" and "24h" use the pattern of the language for that clock, for example "h:mm a" or "HH:mm".
+ */
+private fun getCurrentTime(clockFormat: String): String {
     val deviceLocale = Locale.getDefault()
-    val timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, deviceLocale)
+    val timeFormat = when (clockFormat) {
+        SettingsRepository.CLOCK_FORMAT_12H ->
+            SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(deviceLocale, "hm"), deviceLocale)
+        SettingsRepository.CLOCK_FORMAT_24H ->
+            SimpleDateFormat(android.text.format.DateFormat.getBestDateTimePattern(deviceLocale, "Hm"), deviceLocale)
+        else -> DateFormat.getTimeInstance(DateFormat.SHORT, deviceLocale)
+    }
     return timeFormat.format(Date())
 }
 
@@ -70,7 +82,10 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), HomeUiState())
 
-    private val _currentTime = MutableStateFlow(getCurrentTime())
+    // The clock format of the settings. The collector in init keeps it current.
+    private var clockFormat = SettingsRepository.CLOCK_FORMAT_AUTO
+
+    private val _currentTime = MutableStateFlow(getCurrentTime(clockFormat))
     val currentTime: StateFlow<String> = _currentTime
 
     private val _currentDate = MutableStateFlow(getCurrentDate())
@@ -96,6 +111,12 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
 
     init {
         launcherApps.registerCallback(launcherAppsCallback)
+        viewModelScope.launch {
+            settingsRepository.clockFormat.collect {
+                clockFormat = it
+                updateClock()
+            }
+        }
     }
 
     /** Load the enabled apps again. A new call cancels the previous load, so old data cannot overwrite new data. */
@@ -107,7 +128,7 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun updateClock() {
-        _currentTime.value = getCurrentTime()
+        _currentTime.value = getCurrentTime(clockFormat)
         _currentDate.value = getCurrentDate()
     }
 
