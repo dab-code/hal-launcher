@@ -5,6 +5,7 @@ import android.provider.Settings
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.foundation.Canvas
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
@@ -182,7 +183,7 @@ fun RingDialog(
 
 /**
  * A small lock that opens one time. First the closed lock fades in (450 ms). Then the shackle lifts and
- * turns open (600 ms, a gentle ease, no bounce). Then the open lock stays.
+ * turns open (450 ms). It goes 7% past the open angle and settles back, one small bounce. Then the open lock stays.
  * With "Remove animations" in the system settings, the open lock shows at once.
  */
 @Composable
@@ -197,7 +198,11 @@ fun UnlockMark(color: Color, modifier: Modifier = Modifier) {
             open.snapTo(1f)
         } else {
             alpha.animateTo(1f, tween(durationMillis = 450, easing = LinearEasing))
-            open.animateTo(1f, tween(durationMillis = 600, easing = FastOutSlowInEasing))
+            open.animateTo(1f, keyframes {
+                durationMillis = 450
+                0f at 0 using FastOutSlowInEasing
+                1.07f at 300 using FastOutSlowInEasing
+            })
         }
     }
     Canvas(modifier.size(width = 24.dp, height = 30.dp).graphicsLayer { this.alpha = alpha.value }) {
