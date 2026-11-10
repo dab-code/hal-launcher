@@ -42,4 +42,17 @@ class FormatDurationTest {
         assertEquals("2時間5分", formatDuration((2 * 60 + 5) * 60_000L, JapaneseUnits))
         assertEquals("2:05", formatDurationCompact((2 * 60 + 5) * 60_000L, JapaneseUnits))
     }
+
+    @Test
+    fun appTimeLabel_underOneMinute_isNull() {
+        assertEquals(null, appTimeLabel(0, EnglishUnits))
+        assertEquals(null, appTimeLabel(59_999, EnglishUnits))
+    }
+
+    @Test
+    fun appTimeLabel_usesTheHomeTileFormat() {
+        assertEquals("1m", appTimeLabel(60_000, EnglishUnits))
+        assertEquals("42m", appTimeLabel(42 * 60_000L, EnglishUnits))
+        assertEquals("1h 5m", appTimeLabel(65 * 60_000L, EnglishUnits))
+    }
 }

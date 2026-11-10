@@ -18,6 +18,10 @@ class UsageStatsViewModel(application: Application) : AndroidViewModel(applicati
     private val _todayScreenTime = MutableStateFlow(0L)
     val todayScreenTime: StateFlow<Long> = _todayScreenTime.asStateFlow()
 
+    // The screen time of today for each app, without the home-screen apps.
+    private val _todayPerApp = MutableStateFlow<Map<String, Long>>(emptyMap())
+    val todayPerApp: StateFlow<Map<String, Long>> = _todayPerApp.asStateFlow()
+
     private val _todayPickupCount = MutableStateFlow(0)
     val todayPickupCount: StateFlow<Int> = _todayPickupCount.asStateFlow()
 
@@ -52,6 +56,7 @@ class UsageStatsViewModel(application: Application) : AndroidViewModel(applicati
             if (!granted) {
                 _todayScreenTime.value = 0L
                 _todayPickupCount.value = 0
+                _todayPerApp.value = emptyMap()
                 _weeklyUsage.value = emptyList()
                 _weekSoFar.value = emptyList()
                 return@launch
@@ -60,6 +65,7 @@ class UsageStatsViewModel(application: Application) : AndroidViewModel(applicati
             val today = withContext(Dispatchers.IO) { repository.getTodayUsage() }
             _todayScreenTime.value = today.totalMs
             _todayPickupCount.value = today.pickups
+            _todayPerApp.value = today.perAppMs
 
             if (withWeek) {
                 _weekSoFar.value = withContext(Dispatchers.IO) { repository.getWeekSoFar(today.totalMs) }

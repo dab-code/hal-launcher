@@ -13,7 +13,7 @@ import java.util.Calendar
 /** One usage event: the event type, the package name, the time stamp and the activity class name. */
 data class UsageEvent(val type: Int, val pkg: String?, val ts: Long, val cls: String? = null)
 
-/** The usage of today, from one scan of the usage events. */
+/** The usage of today, from one scan of the usage events. [perAppMs] has no home-screen apps. */
 data class TodayUsage(val totalMs: Long, val pickups: Int, val perAppMs: Map<String, Long>)
 
 /** The foreground time of one app, with its label. */
@@ -49,9 +49,9 @@ class UsageStatsRepository(private val context: Context) {
         val now = System.currentTimeMillis()
         val startOfDay = startOfDay(now)
         val events = readEvents(startOfDay - LEAD_IN_MS, now)
-        val perApp = computePerAppUsage(events, now, countFrom = startOfDay)
+        val perApp = withoutHomeApps(computePerAppUsage(events, now, countFrom = startOfDay), homeScreenPackages())
         return TodayUsage(
-            totalMs = screenTimeMs(perApp, homeScreenPackages()),
+            totalMs = perApp.values.sum(),
             pickups = countPickups(events, from = startOfDay),
             perAppMs = perApp
         )
@@ -333,6 +333,10 @@ fun formatDuration(millis: Long, units: DurationUnits): String {
     val minutes = totalMinutes % 60
     return if (hours > 0) units.hoursMinutes.format(hours, minutes) else units.minutes.format(minutes)
 }
+
+/** The label next to an app on the home screen: the same format as the home tile. Under 1 minute: null. */
+fun appTimeLabel(millis: Long, units: DurationUnits): String? =
+    if (millis < 60_000) null else formatDuration(millis, units)
 
 /** Compact format for bar chart labels: "2:30h" or "45m" */
 fun formatDurationCompact(millis: Long, units: DurationUnits): String {
