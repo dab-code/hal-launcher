@@ -87,6 +87,13 @@
     <string name="font_small">Klein</string>
     <string name="font_medium">Normaal</string>
     <string name="font_large">Groot</string>
+    <string name="label_clock_format">Klokformaat</string>
+    <string name="clock_format_auto">Automatisch</string>
+    <string name="clock_format_12h">12 uur</string>
+    <string name="clock_format_24h">24 uur</string>
+    <string name="label_clock_size">Klokgrootte</string>
+    <string name="clock_size_big">Groot</string>
+    <string name="clock_size_small">Klein</string>
     <string name="pause_toggle">Pauze voor het openen van apps</string>
     <string name="pause_on_desc">Apps buiten het startscherm openen na een korte pauze</string>
     <string name="pause_off_desc">Alle apps openen meteen</string>

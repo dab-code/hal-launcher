@@ -87,6 +87,13 @@
     <string name="font_small">Klein</string>
     <string name="font_medium">Mittel</string>
     <string name="font_large">Groß</string>
+    <string name="label_clock_format">Uhrformat</string>
+    <string name="clock_format_auto">Automatisch</string>
+    <string name="clock_format_12h">12 Stunden</string>
+    <string name="clock_format_24h">24 Stunden</string>
+    <string name="label_clock_size">Uhrgröße</string>
+    <string name="clock_size_big">Groß</string>
+    <string name="clock_size_small">Klein</string>
     <string name="pause_toggle">Pause vor dem Öffnen von Apps</string>
     <string name="pause_on_desc">Apps außerhalb des Startbildschirms öffnen nach einer kurzen Pause</string>
     <string name="pause_off_desc">Alle Apps öffnen sofort</string>

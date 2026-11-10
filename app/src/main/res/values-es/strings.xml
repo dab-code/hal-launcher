@@ -88,6 +88,13 @@
     <string name="font_small">Pequeño</string>
     <string name="font_medium">Mediano</string>
     <string name="font_large">Grande</string>
+    <string name="label_clock_format">Formato del reloj</string>
+    <string name="clock_format_auto">Automático</string>
+    <string name="clock_format_12h">12 horas</string>
+    <string name="clock_format_24h">24 horas</string>
+    <string name="label_clock_size">Tamaño del reloj</string>
+    <string name="clock_size_big">Grande</string>
+    <string name="clock_size_small">Pequeño</string>
     <string name="pause_toggle">Pausa antes de abrir apps</string>
     <string name="pause_on_desc">Las apps fuera del inicio se abren tras una breve pausa</string>
     <string name="pause_off_desc">Todas las apps se abren al instante</string>

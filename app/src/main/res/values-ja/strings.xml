@@ -86,6 +86,13 @@
     <string name="font_small">小</string>
     <string name="font_medium">中</string>
     <string name="font_large">大</string>
+    <string name="label_clock_format">時計の形式</string>
+    <string name="clock_format_auto">自動</string>
+    <string name="clock_format_12h">12時間</string>
+    <string name="clock_format_24h">24時間</string>
+    <string name="label_clock_size">時計のサイズ</string>
+    <string name="clock_size_big">大</string>
+    <string name="clock_size_small">小</string>
     <string name="pause_toggle">アプリを開く前にひと呼吸</string>
     <string name="pause_on_desc">ホーム画面にないアプリは、ひと呼吸おいてから開きます</string>
     <string name="pause_off_desc">すべてのアプリがすぐに開きます</string>

@@ -85,6 +85,8 @@ class UserSettingsActivity : AppCompatActivity() {
                 ) { innerPadding ->
                     val showHomeStats by settingsViewModel.showHomeStats.collectAsStateWithLifecycle()
                     val showAppScreenTime by settingsViewModel.showAppScreenTime.collectAsStateWithLifecycle()
+                    val clockFormat by settingsViewModel.clockFormat.collectAsStateWithLifecycle()
+                    val clockSize by settingsViewModel.clockSize.collectAsStateWithLifecycle()
                     val notificationDotsEnabled by settingsViewModel.notificationDotsEnabled.collectAsStateWithLifecycle()
                     val reminderSettings by settingsViewModel.reminderSettings.collectAsStateWithLifecycle()
                     val openSingleMatch by settingsViewModel.openSingleMatch.collectAsStateWithLifecycle()
@@ -127,6 +129,10 @@ class UserSettingsActivity : AppCompatActivity() {
                         onShowHomeStatsToggle = { settingsViewModel.updateShowHomeStats(it) },
                         showAppScreenTime = showAppScreenTime,
                         onShowAppScreenTimeToggle = { settingsViewModel.updateShowAppScreenTime(it) },
+                        clockFormat = clockFormat,
+                        onClockFormatSelected = { settingsViewModel.updateClockFormat(it) },
+                        clockSize = clockSize,
+                        onClockSizeSelected = { settingsViewModel.updateClockSize(it) },
                         notificationDotsEnabled = notificationDotsEnabled,
                         onNotificationDotsToggle = { settingsViewModel.updateNotificationDotsEnabled(it) },
                         reminderSettings = reminderSettings,
@@ -218,6 +224,10 @@ fun UserSettingsScreen(
     onShowHomeStatsToggle: (Boolean) -> Unit = {},
     showAppScreenTime: Boolean = false,
     onShowAppScreenTimeToggle: (Boolean) -> Unit = {},
+    clockFormat: String = SettingsRepository.CLOCK_FORMAT_AUTO,
+    onClockFormatSelected: (String) -> Unit = {},
+    clockSize: String = SettingsRepository.CLOCK_SIZE_BIG,
+    onClockSizeSelected: (String) -> Unit = {},
     notificationDotsEnabled: Boolean = true,
     onNotificationDotsToggle: (Boolean) -> Unit = {},
     reminderSettings: ReminderSettings = SettingsRepository.DEFAULT_REMINDER_SETTINGS,
@@ -304,6 +314,39 @@ fun UserSettingsScreen(
             FontSizeSelector(
                 currentScale = currentFontSizeScale,
                 onScaleSelected = onFontSizeScaleSelected
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                stringResource(R.string.label_clock_format),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            ChoiceChips(
+                options = listOf(
+                    SettingsRepository.CLOCK_FORMAT_AUTO to stringResource(R.string.clock_format_auto),
+                    SettingsRepository.CLOCK_FORMAT_12H to stringResource(R.string.clock_format_12h),
+                    SettingsRepository.CLOCK_FORMAT_24H to stringResource(R.string.clock_format_24h)
+                ),
+                selected = clockFormat,
+                onSelect = onClockFormatSelected
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                stringResource(R.string.label_clock_size),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            ChoiceChips(
+                options = listOf(
+                    SettingsRepository.CLOCK_SIZE_BIG to stringResource(R.string.clock_size_big),
+                    SettingsRepository.CLOCK_SIZE_SMALL to stringResource(R.string.clock_size_small)
+                ),
+                selected = clockSize,
+                onSelect = onClockSizeSelected
             )
         }
 
@@ -433,14 +476,20 @@ fun UiStyleSelector(
         UiStyle.MONO to stringResource(R.string.style_mono),
         UiStyle.QUIET to stringResource(R.string.style_quiet)
     )
+    ChoiceChips(options, currentStyle, onStyleSelected)
+}
+
+/** One row of chips. The chip of [selected] is on. A tap gives the value of the chip to [onSelect]. */
+@Composable
+fun <T> ChoiceChips(options: List<Pair<T, String>>, selected: T, onSelect: (T) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        options.forEach { (style, label) ->
+        options.forEach { (value, label) ->
             FilterChip(
-                selected = style == currentStyle,
-                onClick = { onStyleSelected(style) },
+                selected = value == selected,
+                onClick = { onSelect(value) },
                 label = { Text(label) }
             )
         }
@@ -457,19 +506,7 @@ fun FontSizeSelector(
         "medium" to stringResource(R.string.font_medium),
         "large" to stringResource(R.string.font_large)
     )
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        options.forEach { (value, label) ->
-            val isSelected = value == currentScale
-            FilterChip(
-                selected = isSelected,
-                onClick = { onScaleSelected(value) },
-                label = { Text(label) }
-            )
-        }
-    }
+    ChoiceChips(options, currentScale, onScaleSelected)
 }
 
 @Composable

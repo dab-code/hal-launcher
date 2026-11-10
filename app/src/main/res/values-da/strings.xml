@@ -87,6 +87,13 @@
     <string name="font_small">Lille</string>
     <string name="font_medium">Mellem</string>
     <string name="font_large">Stor</string>
+    <string name="label_clock_format">Urformat</string>
+    <string name="clock_format_auto">Automatisk</string>
+    <string name="clock_format_12h">12 timer</string>
+    <string name="clock_format_24h">24 timer</string>
+    <string name="label_clock_size">Urstørrelse</string>
+    <string name="clock_size_big">Stor</string>
+    <string name="clock_size_small">Lille</string>
     <string name="pause_toggle">Pause før apps åbnes</string>
     <string name="pause_on_desc">Apps uden for startskærmen åbner efter en kort pause</string>
     <string name="pause_off_desc">Alle apps åbnes med det samme</string>

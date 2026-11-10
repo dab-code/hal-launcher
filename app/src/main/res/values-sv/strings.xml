@@ -87,6 +87,13 @@
     <string name="font_small">Liten</string>
     <string name="font_medium">Mellan</string>
     <string name="font_large">Stor</string>
+    <string name="label_clock_format">Klockformat</string>
+    <string name="clock_format_auto">Automatiskt</string>
+    <string name="clock_format_12h">12 timmar</string>
+    <string name="clock_format_24h">24 timmar</string>
+    <string name="label_clock_size">Klockstorlek</string>
+    <string name="clock_size_big">Stor</string>
+    <string name="clock_size_small">Liten</string>
     <string name="pause_toggle">Paus innan appar öppnas</string>
     <string name="pause_on_desc">Appar utanför hemskärmen öppnas efter en kort paus</string>
     <string name="pause_off_desc">Alla appar öppnas direkt</string>

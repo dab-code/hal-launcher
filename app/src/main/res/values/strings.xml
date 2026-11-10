@@ -114,6 +114,13 @@
     <string name="font_small">Small</string>
     <string name="font_medium">Medium</string>
     <string name="font_large">Large</string>
+    <string name="label_clock_format">Clock Format</string>
+    <string name="clock_format_auto">Automatic</string>
+    <string name="clock_format_12h">12-hour</string>
+    <string name="clock_format_24h">24-hour</string>
+    <string name="label_clock_size">Clock Size</string>
+    <string name="clock_size_big">Big</string>
+    <string name="clock_size_small">Small</string>
     <string name="pause_toggle">Pause before opening apps</string>
     <string name="pause_on_desc">Apps not on home open after a short pause</string>
     <string name="pause_off_desc">All apps open at once</string>

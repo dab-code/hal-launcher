@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -87,6 +88,7 @@ import com.dabcode.hal.usage.formatLimit
 import com.dabcode.hal.usage.rememberDurationUnits
 import com.dabcode.hal.usage.underLimitDays
 import com.dabcode.settings.AppListAlignment
+import com.dabcode.settings.SettingsRepository
 import com.dabcode.settings.UiStyle
 
 // Main activity
@@ -115,6 +117,7 @@ class MainActivity : AppCompatActivity() {
                 val alwaysAllowed by settingsViewModel.alwaysAllowedPackages.collectAsStateWithLifecycle()
                 val showHomeStats by settingsViewModel.showHomeStats.collectAsStateWithLifecycle()
                 val showAppScreenTime by settingsViewModel.showAppScreenTime.collectAsStateWithLifecycle()
+                val clockSize by settingsViewModel.clockSize.collectAsStateWithLifecycle()
 
                 HomeScreen(
                     mainViewModel = mainViewModel,
@@ -124,7 +127,8 @@ class MainActivity : AppCompatActivity() {
                     lockdownThresholdMinutes = lockdownThreshold,
                     alwaysAllowed = alwaysAllowed,
                     showHomeStats = showHomeStats,
-                    showAppScreenTime = showAppScreenTime
+                    showAppScreenTime = showAppScreenTime,
+                    smallClock = clockSize == SettingsRepository.CLOCK_SIZE_SMALL
                 )
 
                 // Dialogs overlay the pager
@@ -303,7 +307,8 @@ fun HomeScreen(
     lockdownThresholdMinutes: Int = 120,
     alwaysAllowed: Set<String> = emptySet(),
     showHomeStats: Boolean = true,
-    showAppScreenTime: Boolean = false
+    showAppScreenTime: Boolean = false,
+    smallClock: Boolean = false
 ) {
     val context = LocalContext.current
     val palette = LocalPalette.current
@@ -414,24 +419,31 @@ fun HomeScreen(
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // A long press on the clock opens "Focus now".
-            Text(
-                text = currentTime,
-                style = MaterialTheme.typography.headlineLarge,
+            // A long press on the clock or the date opens "Focus now".
+            // The touch area is at least 48dp high, also with the small clock.
+            Column(
                 modifier = Modifier
-                    .padding(top = if (isLandscape) 32.dp else 68.dp, start = 8.dp, end = 8.dp)
+                    .padding(top = if (isLandscape) 32.dp else 68.dp, bottom = 16.dp, start = 8.dp, end = 8.dp)
                     .fillMaxWidth()
-                    .combinedClickable(onClick = {}, onLongClick = { showFocusNow = true }),
-                textAlign = textAlign
-            )
-            Text(
-                text = currentDate,
-                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 12.sp),
-                modifier = Modifier
-                    .padding(bottom = 16.dp, start = 8.dp, end = 8.dp)
-                    .fillMaxWidth(),
-                textAlign = textAlign
-            )
+                    .combinedClickable(onClick = {}, onLongClick = { showFocusNow = true })
+                    .heightIn(min = 48.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                val bigClock = MaterialTheme.typography.headlineLarge
+                Text(
+                    text = currentTime,
+                    // The small clock is a little larger than the date line.
+                    style = if (smallClock) bigClock.copy(fontSize = bigClock.fontSize * SMALL_CLOCK_SCALE) else bigClock,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = textAlign
+                )
+                Text(
+                    text = currentDate,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 12.sp),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = textAlign
+                )
+            }
 
             val focus = activeFocus
             if (focus != null) {
@@ -727,6 +739,9 @@ fun AppListItem(
         }
     }
 }
+
+/** The size of the small clock, relative to the big clock (36sp at the medium font size: about 20sp). */
+private const val SMALL_CLOCK_SCALE = 0.55f
 
 /** The quiet screen time label of an app row. An invisible label only takes its space. */
 @Composable
