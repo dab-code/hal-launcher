@@ -7,7 +7,6 @@
     <string name="title_settings">Settings</string>
     <string name="title_user_settings">User Settings</string>
     <string name="title_focus_mode">Focus Mode</string>
-    <string name="title_essential_apps">Essential Apps</string>
     <string name="title_screen_time">Screen Time</string>
     <string name="label_notification_listener">HAL Notification Listener</string>
 
@@ -102,7 +101,6 @@
     <string name="section_mindful">Mindful Use</string>
     <string name="section_mindful_subtitle">Tools to help you stay intentional</string>
     <string name="focus_mode_subtitle">Schedule times when only certain apps are accessible</string>
-    <string name="essential_apps_subtitle">Choose which apps stay accessible during lockdown</string>
     <string name="section_insights">Insights</string>
     <string name="section_insights_subtitle">Understand your phone usage</string>
     <string name="screen_time_subtitle">View daily and weekly usage stats</string>
@@ -163,7 +161,6 @@
     <string name="focus_select_allowed_apps">Select allowed apps</string>
 
     <!-- Essential Apps -->
-    <string name="essential_apps_hint">Selected apps will remain accessible when your daily usage limit is reached.</string>
 
     <!-- Focus round 2 (one easy Focus). New keys only. -->
     <string name="focus_word">Focus</string>

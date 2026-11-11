@@ -5,7 +5,6 @@
     <string name="title_settings">Einstellungen</string>
     <string name="title_user_settings">Einstellungen</string>
     <string name="title_focus_mode">Fokusmodus</string>
-    <string name="title_essential_apps">Wichtige Apps</string>
     <string name="title_screen_time">Bildschirmzeit</string>
     <string name="label_notification_listener">HAL-Benachrichtigungsdienst</string>
     <string name="action_open_settings">Einstellungen öffnen</string>
@@ -75,7 +74,6 @@
     <string name="section_mindful">Bewusste Nutzung</string>
     <string name="section_mindful_subtitle">Hilfen, um dein Handy gezielt zu nutzen</string>
     <string name="focus_mode_subtitle">Plane Zeiten, in denen nur bestimmte Apps verfügbar sind</string>
-    <string name="essential_apps_subtitle">Wähle, welche Apps bei einer Sperre verfügbar bleiben</string>
     <string name="section_insights">Einblicke</string>
     <string name="section_insights_subtitle">Verstehe deine Handynutzung</string>
     <string name="screen_time_subtitle">Sieh dir deine tägliche und wöchentliche Nutzung an</string>
@@ -130,7 +128,6 @@
     <string name="focus_allowed_apps">Erlaubte Apps: %1$d ausgewählt</string>
     <string name="focus_choose_apps">Apps auswählen</string>
     <string name="focus_select_allowed_apps">Erlaubte Apps auswählen</string>
-    <string name="essential_apps_hint">Die ausgewählten Apps bleiben verfügbar, wenn dein Tageslimit erreicht ist.</string>
 
     <!-- Focus round 2 (one easy Focus). New keys only. -->
     <string name="focus_word">Fokus</string>

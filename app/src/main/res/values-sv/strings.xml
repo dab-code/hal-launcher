@@ -5,7 +5,6 @@
     <string name="title_settings">Inställningar</string>
     <string name="title_user_settings">Inställningar</string>
     <string name="title_focus_mode">Fokusläge</string>
-    <string name="title_essential_apps">Viktiga appar</string>
     <string name="title_screen_time">Skärmtid</string>
     <string name="label_notification_listener">HAL-aviseringslyssnare</string>
     <string name="action_open_settings">Öppna inställningar</string>
@@ -75,7 +74,6 @@
     <string name="section_mindful">Medveten användning</string>
     <string name="section_mindful_subtitle">Verktyg för att använda telefonen medvetet</string>
     <string name="focus_mode_subtitle">Schemalägg tider då bara vissa appar är tillgängliga</string>
-    <string name="essential_apps_subtitle">Välj vilka appar som är tillgängliga under spärr</string>
     <string name="section_insights">Insikter</string>
     <string name="section_insights_subtitle">Förstå din telefonanvändning</string>
     <string name="screen_time_subtitle">Visa daglig och veckovis användning</string>
@@ -130,7 +128,6 @@
     <string name="focus_allowed_apps">Tillåtna appar: %1$d</string>
     <string name="focus_choose_apps">Välj appar</string>
     <string name="focus_select_allowed_apps">Välj tillåtna appar</string>
-    <string name="essential_apps_hint">De valda apparna är tillgängliga när din dagliga gräns är nådd.</string>
 
     <!-- Focus round 2 (one easy Focus). New keys only. -->
     <string name="focus_word">Fokus</string>

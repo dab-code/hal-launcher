@@ -5,7 +5,6 @@
     <string name="title_settings">設定</string>
     <string name="title_user_settings">設定</string>
     <string name="title_focus_mode">集中モード</string>
-    <string name="title_essential_apps">必須アプリ</string>
     <string name="title_screen_time">スクリーンタイム</string>
     <string name="label_notification_listener">HAL 通知リスナー</string>
     <string name="action_open_settings">設定を開く</string>
@@ -74,7 +73,6 @@
     <string name="section_mindful">意識的な使い方</string>
     <string name="section_mindful_subtitle">意図を持って使うためのツール</string>
     <string name="focus_mode_subtitle">特定のアプリだけを使える時間を設定</string>
-    <string name="essential_apps_subtitle">ロックダウン中も使えるアプリを選ぶ</string>
     <string name="section_insights">使用状況</string>
     <string name="section_insights_subtitle">スマホの使い方を知る</string>
     <string name="screen_time_subtitle">1日と1週間の使用状況を見る</string>
@@ -128,7 +126,6 @@
     <string name="focus_allowed_apps">許可するアプリ：%1$d個を選択中</string>
     <string name="focus_choose_apps">アプリを選ぶ</string>
     <string name="focus_select_allowed_apps">許可するアプリを選ぶ</string>
-    <string name="essential_apps_hint">1日の上限に達しても、選んだアプリは使えます。</string>
 
     <!-- Focus round 2 (one easy Focus). New keys only. -->
     <string name="focus_word">集中</string>

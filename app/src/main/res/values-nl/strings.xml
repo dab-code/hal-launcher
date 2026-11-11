@@ -5,7 +5,6 @@
     <string name="title_settings">Instellingen</string>
     <string name="title_user_settings">Instellingen</string>
     <string name="title_focus_mode">Focusmodus</string>
-    <string name="title_essential_apps">Essentiële apps</string>
     <string name="title_screen_time">Schermtijd</string>
     <string name="label_notification_listener">HAL-meldingstoegang</string>
     <string name="action_open_settings">Instellingen openen</string>
@@ -75,7 +74,6 @@
     <string name="section_mindful">Bewust gebruik</string>
     <string name="section_mindful_subtitle">Hulpmiddelen om je telefoon bewust te gebruiken</string>
     <string name="focus_mode_subtitle">Plan tijden waarin alleen bepaalde apps beschikbaar zijn</string>
-    <string name="essential_apps_subtitle">Kies welke apps beschikbaar blijven tijdens een blokkade</string>
     <string name="section_insights">Inzicht</string>
     <string name="section_insights_subtitle">Begrijp je telefoongebruik</string>
     <string name="screen_time_subtitle">Bekijk dagelijks en wekelijks gebruik</string>
@@ -130,7 +128,6 @@
     <string name="focus_allowed_apps">Toegestane apps: %1$d gekozen</string>
     <string name="focus_choose_apps">Apps kiezen</string>
     <string name="focus_select_allowed_apps">Toegestane apps kiezen</string>
-    <string name="essential_apps_hint">De gekozen apps blijven beschikbaar als je daglimiet is bereikt.</string>
 
     <!-- Focus round 2 (one easy Focus). New keys only. -->
     <string name="focus_word">Focus</string>

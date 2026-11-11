@@ -5,7 +5,6 @@
     <string name="title_settings">Ajustes</string>
     <string name="title_user_settings">Ajustes</string>
     <string name="title_focus_mode">Modo concentración</string>
-    <string name="title_essential_apps">Apps esenciales</string>
     <string name="title_screen_time">Tiempo de uso</string>
     <string name="label_notification_listener">Lector de notificaciones de HAL</string>
     <string name="action_open_settings">Abrir ajustes</string>
@@ -76,7 +75,6 @@
     <string name="section_mindful">Uso consciente</string>
     <string name="section_mindful_subtitle">Herramientas para usar el móvil de forma consciente</string>
     <string name="focus_mode_subtitle">Programa horas en las que solo algunas apps están disponibles</string>
-    <string name="essential_apps_subtitle">Elige qué apps siguen disponibles durante el bloqueo</string>
     <string name="section_insights">Estadísticas</string>
     <string name="section_insights_subtitle">Entiende el uso de tu móvil</string>
     <string name="screen_time_subtitle">Ver el uso diario y semanal</string>
@@ -132,7 +130,6 @@
     <string name="focus_allowed_apps">Apps permitidas: %1$d</string>
     <string name="focus_choose_apps">Elegir apps</string>
     <string name="focus_select_allowed_apps">Elegir apps permitidas</string>
-    <string name="essential_apps_hint">Las apps elegidas siguen disponibles cuando llegas a tu límite diario.</string>
 
     <!-- Focus round 2 (one easy Focus). New keys only. -->
     <string name="focus_word">Concentración</string>
