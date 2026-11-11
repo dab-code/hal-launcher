@@ -19,6 +19,10 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.HOME" />
         </intent>
+        <!-- The in-call screens, to keep call time (see withoutIconlessApps). -->
+        <intent>
+            <action android:name="android.telecom.InCallService" />
+        </intent>
         <!-- The default apps for the "Always allowed" list (see DefaultApps.kt). -->
         <intent>
             <action android:name="android.intent.action.DIAL" />

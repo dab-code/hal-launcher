@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Process
 import android.provider.Settings
+import android.telecom.TelecomManager
 import java.util.Calendar
 
 /** One usage event: the event type, the package name, the time stamp and the activity class name. */
@@ -49,7 +50,10 @@ class UsageStatsRepository(private val context: Context) {
         val now = System.currentTimeMillis()
         val startOfDay = startOfDay(now)
         val events = readEvents(startOfDay - LEAD_IN_MS, now)
-        val perApp = withoutHomeApps(computePerAppUsage(events, now, countFrom = startOfDay), homeScreenPackages())
+        val perApp = withoutHomeApps(
+            visibleUsage().invoke(computePerAppUsage(events, now, countFrom = startOfDay)),
+            homeScreenPackages()
+        )
         return TodayUsage(
             totalMs = perApp.values.sum(),
             pickups = countPickups(events, from = startOfDay),
@@ -82,6 +86,28 @@ class UsageStatsRepository(private val context: Context) {
     }
 
     /**
+     * The filter for the per-app time: keep the apps with a launcher icon (the apps of All apps).
+     * HAL cannot see the other apps, so it cannot name them. Call time stays (see [withoutIconlessApps]).
+     */
+    private fun visibleUsage(): (Map<String, Long>) -> Map<String, Long> {
+        val pm = context.packageManager
+        val launcher = pm.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER), 0
+        ).map { it.activityInfo.packageName }.toSet()
+        val inCall = try {
+            pm.queryIntentServices(Intent(IN_CALL_SERVICE_ACTION), 0).map { it.serviceInfo.packageName }.toSet()
+        } catch (_: Exception) {
+            emptySet()
+        }
+        val dialer = try {
+            (context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager)?.defaultDialerPackage
+        } catch (_: Exception) {
+            null
+        }
+        return { perApp -> withoutIconlessApps(perApp, launcher, inCall, dialer) }
+    }
+
+    /**
      * Get 8 days. Index 0 is the same weekday last week, up to the same time of day as now.
      * Indices 1 to 7 are 6 days ago to today. Do not call this on the main thread.
      */
@@ -90,6 +116,7 @@ class UsageStatsRepository(private val context: Context) {
         val now = System.currentTimeMillis()
         val cal = Calendar.getInstance()
         val homePackages = homeScreenPackages()
+        val visible = visibleUsage()
 
         for (daysAgo in 7 downTo 0) {
             cal.timeInMillis = now
@@ -104,7 +131,9 @@ class UsageStatsRepository(private val context: Context) {
                 else -> nextDayStart(dayStart)
             }
 
-            val perApp = computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart)
+            val perApp = visible(
+                computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart)
+            )
             val dayLabel = android.text.format.DateFormat.format("EEE", cal).toString()
             // Show only the apps with more than 1 minute.
             val rows = withoutHomeApps(perApp, homePackages).filter { it.value > 60_000 }
@@ -114,11 +143,15 @@ class UsageStatsRepository(private val context: Context) {
     }
 
     // The screen time from [dayStart] to [dayEnd], without the home-screen apps.
-    private fun dayScreenTime(dayStart: Long, dayEnd: Long, homePackages: Set<String>): Long =
-        screenTimeMs(
-            computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart),
-            homePackages
-        )
+    private fun dayScreenTime(
+        dayStart: Long,
+        dayEnd: Long,
+        homePackages: Set<String>,
+        visible: (Map<String, Long>) -> Map<String, Long>
+    ): Long = screenTimeMs(
+        visible(computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart)),
+        homePackages
+    )
 
     // The totals of the past days of this week, and the start of the day when they were read.
     // Past days do not change. Read them again only when the day changes.
@@ -134,6 +167,7 @@ class UsageStatsRepository(private val context: Context) {
         val todayStart = startOfDay(System.currentTimeMillis())
         if (pastDaysReadOn != todayStart) {
             val homePackages = homeScreenPackages()
+            val visible = visibleUsage()
             val cal = Calendar.getInstance()
             cal.timeInMillis = todayStart
             val pastDays = daysSinceMonday(cal.get(Calendar.DAY_OF_WEEK))
@@ -142,7 +176,7 @@ class UsageStatsRepository(private val context: Context) {
                 cal.add(Calendar.DAY_OF_YEAR, -daysAgo)
                 val dayStart = startOfDay(cal.timeInMillis)
                 val dayEnd = nextDayStart(dayStart)
-                dayScreenTime(dayStart, dayEnd, homePackages)
+                dayScreenTime(dayStart, dayEnd, homePackages, visible)
             }
             pastDaysReadOn = todayStart
         }
@@ -156,13 +190,14 @@ class UsageStatsRepository(private val context: Context) {
     fun getPastDayTotals(days: Int): List<Long> {
         val todayStart = startOfDay(System.currentTimeMillis())
         val homePackages = homeScreenPackages()
+        val visible = visibleUsage()
         val cal = Calendar.getInstance()
         return (days downTo 1).map { daysAgo ->
             cal.timeInMillis = todayStart
             cal.add(Calendar.DAY_OF_YEAR, -daysAgo)
             val dayStart = startOfDay(cal.timeInMillis)
             val dayEnd = nextDayStart(dayStart)
-            dayScreenTime(dayStart, dayEnd, homePackages)
+            dayScreenTime(dayStart, dayEnd, homePackages, visible)
         }
     }
 
@@ -210,6 +245,32 @@ fun homePackagesOf(candidates: List<HomeCandidate>, ownPackage: String): Set<Str
 /** Remove the home-screen apps from the per-app time. Time on a home screen is not app use. */
 fun withoutHomeApps(perAppMs: Map<String, Long>, homePackages: Set<String>): Map<String, Long> =
     perAppMs.filterKeys { it !in homePackages }
+
+/** The action of an InCallService. The in-call screen of a phone has a service with this action. */
+const val IN_CALL_SERVICE_ACTION = "android.telecom.InCallService"
+
+/**
+ * Keep only the apps with a launcher icon ([launcherPackages]). An app with no icon is not in All apps,
+ * and HAL cannot name it. Call time stays: an in-call package ([inCallPackages]) with no icon adds its
+ * time to the [dialerPackage]. With no dialer, that time is dropped.
+ */
+fun withoutIconlessApps(
+    perAppMs: Map<String, Long>,
+    launcherPackages: Set<String>,
+    inCallPackages: Set<String>,
+    dialerPackage: String?
+): Map<String, Long> {
+    val result = mutableMapOf<String, Long>()
+    for ((pkg, ms) in perAppMs) {
+        val target = when {
+            pkg in launcherPackages -> pkg
+            pkg in inCallPackages && dialerPackage != null -> dialerPackage
+            else -> continue
+        }
+        result.merge(target, ms, Long::plus)
+    }
+    return result
+}
 
 /** The screen time: the sum of the per-app time without the home-screen apps. */
 fun screenTimeMs(perAppMs: Map<String, Long>, homePackages: Set<String>): Long =
