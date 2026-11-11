@@ -469,6 +469,18 @@ fun UserSettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // The app version: one small muted line. Read at runtime, so it needs no BuildConfig.
+        val version = remember { appVersion(context) }
+        if (version != null) {
+            Text(
+                version,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+        }
     }
 }
 
@@ -831,4 +843,12 @@ fun RowDescription(text: String, modifier: Modifier = Modifier) {
         color = MaterialTheme.colorScheme.secondary,
         modifier = modifier
     )
+}
+
+/** The app version as "HAL 2.1 (27)": the version name and the version code. Null when the read fails. */
+fun appVersion(context: android.content.Context): String? = try {
+    val info = context.packageManager.getPackageInfo(context.packageName, 0)
+    "HAL ${info.versionName} (${androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(info)})"
+} catch (_: PackageManager.NameNotFoundException) {
+    null
 }
