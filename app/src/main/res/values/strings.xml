@@ -253,6 +253,13 @@
     <string name="hidden_apps_title">Hidden apps</string>
     <string name="hidden_apps_desc">Apps that show only when you search</string>
     <string name="hidden_apps_empty">No hidden apps. Long-press an app in All Apps to hide it.</string>
+    <string name="essential_apps_title">Essential apps</string>
+    <string name="essential_apps_desc">Time in these apps does not count toward the total screen time.</string>
+    <string name="essential_apps_empty">No essential apps. Long-press an app in All Apps to mark it as essential.</string>
+    <string name="action_mark_essential">Mark as essential</string>
+    <string name="action_remove_essential">Remove from essential</string>
+    <string name="action_remove">Remove</string>
+    <string name="usage_essential_line">Essential: %1$s · %2$s</string>
     <string name="single_match_toggle">Open app when search finds one match</string>
     <string name="single_match_desc">Opens the app when only one app matches</string>
     <!-- Debug builds only. Not translated. -->

@@ -98,6 +98,8 @@ class SettingsRepository(private val context: Context) {
         // The home clock: "auto" (the format of the language), "12h" or "24h". And "big" or "small".
         val CLOCK_FORMAT = stringPreferencesKey("clock_format")
         val CLOCK_SIZE = stringPreferencesKey("clock_size")
+        // The essential apps (for example maps). Their time does not count as screen time.
+        val ESSENTIAL_APPS = stringSetPreferencesKey("essential_apps")
     }
 
     // Default values
@@ -272,6 +274,16 @@ class SettingsRepository(private val context: Context) {
         dataStore.edit {
             val current = it[PreferencesKeys.HIDDEN_APPS] ?: emptySet()
             it[PreferencesKeys.HIDDEN_APPS] = if (hidden) current + pkg else current - pkg
+        }
+    }
+
+    val essentialApps: Flow<Set<String>> = setting { it[PreferencesKeys.ESSENTIAL_APPS] ?: emptySet() }
+
+    /** Mark [pkg] as essential or not. Read and write in one transaction. */
+    suspend fun setAppEssential(pkg: String, essential: Boolean) {
+        dataStore.edit {
+            val current = it[PreferencesKeys.ESSENTIAL_APPS] ?: emptySet()
+            it[PreferencesKeys.ESSENTIAL_APPS] = if (essential) current + pkg else current - pkg
         }
     }
 

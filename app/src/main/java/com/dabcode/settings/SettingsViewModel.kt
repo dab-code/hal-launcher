@@ -138,6 +138,13 @@ class SettingsViewModel(
         viewModelScope.launch { repository.setAppHidden(pkg, hidden) }
     }
 
+    val essentialApps: StateFlow<Set<String>> = repository.essentialApps
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
+
+    fun setAppEssential(pkg: String, essential: Boolean) {
+        viewModelScope.launch { repository.setAppEssential(pkg, essential) }
+    }
+
     val openSingleMatch: StateFlow<Boolean> = repository.openSingleMatch
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.DEFAULT_OPEN_SINGLE_MATCH)
 

@@ -203,6 +203,13 @@
     <string name="hidden_apps_title">非表示のアプリ</string>
     <string name="hidden_apps_desc">検索したときだけ表示されるアプリ</string>
     <string name="hidden_apps_empty">非表示のアプリはありません。すべてのアプリでアプリを長押しすると非表示にできます。</string>
+    <string name="essential_apps_title">必須アプリ</string>
+    <string name="essential_apps_desc">これらのアプリの時間は、合計のスクリーンタイムに含まれません。</string>
+    <string name="essential_apps_empty">必須アプリはありません。すべてのアプリでアプリを長押しすると必須にできます。</string>
+    <string name="action_mark_essential">必須にする</string>
+    <string name="action_remove_essential">必須から外す</string>
+    <string name="action_remove">外す</string>
+    <string name="usage_essential_line">必須: %1$s · %2$s</string>
     <string name="single_match_toggle">検索結果が 1 件ならアプリを開く</string>
     <string name="single_match_desc">一致するアプリが1つだけなら、そのアプリを開きます</string>
     <!-- Round 4: quiet apps and the one review request. -->

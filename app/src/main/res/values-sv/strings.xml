@@ -206,6 +206,13 @@
     <string name="hidden_apps_title">Dolda appar</string>
     <string name="hidden_apps_desc">Appar som bara visas när du söker</string>
     <string name="hidden_apps_empty">Inga dolda appar. Tryck länge på en app i Alla appar för att dölja den.</string>
+    <string name="essential_apps_title">Viktiga appar</string>
+    <string name="essential_apps_desc">Tid i de här apparna räknas inte in i den totala skärmtiden.</string>
+    <string name="essential_apps_empty">Inga viktiga appar. Tryck länge på en app i Alla appar för att markera den som viktig.</string>
+    <string name="action_mark_essential">Markera som viktig</string>
+    <string name="action_remove_essential">Ta bort från viktiga</string>
+    <string name="action_remove">Ta bort</string>
+    <string name="usage_essential_line">Viktiga: %1$s · %2$s</string>
     <string name="single_match_toggle">Öppna appen när sökningen hittar en enda träff</string>
     <string name="single_match_desc">Öppnar appen när bara en app matchar</string>
     <!-- Round 4: quiet apps and the one review request. -->

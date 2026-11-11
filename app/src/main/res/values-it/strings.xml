@@ -209,6 +209,13 @@
     <string name="hidden_apps_title">App nascoste</string>
     <string name="hidden_apps_desc">App visibili solo quando cerchi</string>
     <string name="hidden_apps_empty">Nessuna app nascosta. Tieni premuta un\'app in Tutte le app per nasconderla.</string>
+    <string name="essential_apps_title">App essenziali</string>
+    <string name="essential_apps_desc">Il tempo in queste app non conta nel tempo di utilizzo totale.</string>
+    <string name="essential_apps_empty">Nessuna app essenziale. Tieni premuta un\'app in Tutte le app per segnarla come essenziale.</string>
+    <string name="action_mark_essential">Segna come essenziale</string>
+    <string name="action_remove_essential">Togli dalle essenziali</string>
+    <string name="action_remove">Togli</string>
+    <string name="usage_essential_line">Essenziali: %1$s · %2$s</string>
     <string name="single_match_toggle">Apri l\'app quando la ricerca trova un solo risultato</string>
     <string name="single_match_desc">Apre l\'app quando solo un\'app corrisponde</string>
     <!-- Round 4: quiet apps and the one review request. -->

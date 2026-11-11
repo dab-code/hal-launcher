@@ -206,6 +206,13 @@
     <string name="hidden_apps_title">Ausgeblendete Apps</string>
     <string name="hidden_apps_desc">Apps, die nur bei der Suche erscheinen</string>
     <string name="hidden_apps_empty">Keine ausgeblendeten Apps. Halte eine App in Alle Apps gedrückt, um sie auszublenden.</string>
+    <string name="essential_apps_title">Wichtige Apps</string>
+    <string name="essential_apps_desc">Die Zeit in diesen Apps zählt nicht zur gesamten Bildschirmzeit.</string>
+    <string name="essential_apps_empty">Keine wichtigen Apps. Halte eine App in Alle Apps gedrückt, um sie als wichtig zu markieren.</string>
+    <string name="action_mark_essential">Als wichtig markieren</string>
+    <string name="action_remove_essential">Nicht mehr wichtig</string>
+    <string name="action_remove">Entfernen</string>
+    <string name="usage_essential_line">Wichtig: %1$s · %2$s</string>
     <string name="single_match_toggle">App öffnen, wenn die Suche genau einen Treffer hat</string>
     <string name="single_match_desc">Öffnet die App, wenn nur eine App passt</string>
     <!-- Round 4: quiet apps and the one review request. -->

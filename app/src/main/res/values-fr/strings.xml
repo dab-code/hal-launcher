@@ -209,6 +209,13 @@
     <string name="hidden_apps_title">Apps masquées</string>
     <string name="hidden_apps_desc">Apps visibles uniquement dans la recherche</string>
     <string name="hidden_apps_empty">Aucune app masquée. Appuyez de manière prolongée sur une app dans Toutes les apps pour la masquer.</string>
+    <string name="essential_apps_title">Apps essentielles</string>
+    <string name="essential_apps_desc">Le temps passé dans ces apps ne compte pas dans le temps d\'écran total.</string>
+    <string name="essential_apps_empty">Aucune app essentielle. Appuyez de manière prolongée sur une app dans Toutes les apps pour la marquer comme essentielle.</string>
+    <string name="action_mark_essential">Marquer comme essentielle</string>
+    <string name="action_remove_essential">Retirer des essentielles</string>
+    <string name="action_remove">Retirer</string>
+    <string name="usage_essential_line">Essentielles : %1$s · %2$s</string>
     <string name="single_match_toggle">Ouvrir l\'app quand la recherche trouve un seul résultat</string>
     <string name="single_match_desc">Ouvre l\'app quand une seule app correspond</string>
     <!-- Round 4: quiet apps and the one review request. -->

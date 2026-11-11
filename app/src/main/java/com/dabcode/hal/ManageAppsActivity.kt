@@ -97,6 +97,7 @@ class ManageAppsActivity : AppCompatActivity() {
                 val alwaysAllowed by settingsViewModel.alwaysAllowedPackages.collectAsStateWithLifecycle()
                 val customAppNames by settingsViewModel.customAppNames.collectAsStateWithLifecycle()
                 val hiddenApps by settingsViewModel.hiddenApps.collectAsStateWithLifecycle()
+                val essentialApps by settingsViewModel.essentialApps.collectAsStateWithLifecycle()
                 val openSingleMatch by settingsViewModel.openSingleMatch.collectAsStateWithLifecycle()
                 val quietApps by settingsViewModel.quietApps.collectAsStateWithLifecycle()
                 val quietEntries by QuietStore.get(this@ManageAppsActivity).entries.collectAsStateWithLifecycle()
@@ -173,6 +174,8 @@ class ManageAppsActivity : AppCompatActivity() {
                         onRenameApp = settingsViewModel::setCustomAppName,
                         hiddenApps = hiddenApps,
                         onSetHidden = settingsViewModel::setAppHidden,
+                        essentialApps = essentialApps,
+                        onSetEssential = settingsViewModel::setAppEssential,
                         openSingleMatch = openSingleMatch
                     )
                 }
@@ -196,6 +199,8 @@ fun ManageAppsScreen(
     onRenameApp: (componentKey: String, name: String?) -> Unit = { _, _ -> },
     hiddenApps: Set<String> = emptySet(),
     onSetHidden: (pkg: String, hidden: Boolean) -> Unit = { _, _ -> },
+    essentialApps: Set<String> = emptySet(),
+    onSetEssential: (pkg: String, essential: Boolean) -> Unit = { _, _ -> },
     openSingleMatch: Boolean = false,
     usageStatsViewModel: com.dabcode.hal.usage.UsageStatsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     focusModeViewModel: com.dabcode.hal.focus.FocusModeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
@@ -379,6 +384,8 @@ fun ManageAppsScreen(
                             isHidden = appInfo.packageName in hiddenApps,
                             onRename = { appToRename = appInfo },
                             onSetHidden = { hidden -> onSetHidden(appInfo.packageName, hidden) },
+                            isEssential = appInfo.packageName in essentialApps,
+                            onSetEssential = { essential -> onSetEssential(appInfo.packageName, essential) },
                             onUninstall = { requestUninstall(context, appInfo.packageName) }
                         )
                     }
@@ -431,7 +438,8 @@ fun JumpBar(letters: List<Char>, onLetter: (Char) -> Unit) {
 
 /**
  * One app in All Apps: the name and the switch for the home screen.
- * A tap on the name calls [onOpen]. A long press shows a menu (rename, hide or unhide, uninstall) and does not open the app.
+ * A tap on the name calls [onOpen]. A long press shows a menu (rename, hide or unhide, essential, uninstall)
+ * and does not open the app.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -443,6 +451,8 @@ fun AppToggleItem(
     isHidden: Boolean = false,
     onRename: () -> Unit = {},
     onSetHidden: (Boolean) -> Unit = {},
+    isEssential: Boolean = false,
+    onSetEssential: (Boolean) -> Unit = {},
     onUninstall: () -> Unit = {}
 ) {
     var menuOpen by remember { mutableStateOf(false) }
@@ -476,6 +486,13 @@ fun AppToggleItem(
                     onClick = {
                         menuOpen = false
                         onSetHidden(!isHidden)
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(if (isEssential) R.string.action_remove_essential else R.string.action_mark_essential)) },
+                    onClick = {
+                        menuOpen = false
+                        onSetEssential(!isEssential)
                     }
                 )
                 if (appInfo.canUninstall) {

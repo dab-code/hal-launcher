@@ -244,6 +244,23 @@ fun UsageStatsScreen(
                         }
                     }
 
+                    // The essential apps: one muted line. Their time is not in the total and not in the rows.
+                    val essentialMs = day.essential.sumOf { it.ms }
+                    if (essentialMs >= 60_000) {
+                        item(key = "essential") {
+                            Text(
+                                stringResource(
+                                    R.string.usage_essential_line,
+                                    formatDuration(essentialMs, units),
+                                    essentialNames(day.essential.map { usageRowName(it.pkg, it.name, quietNames) })
+                                ),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = palette.muted,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+                        }
+                    }
+
                     items(day.apps, key = { it.pkg }) { usage ->
                         AppUsageRow(usageRowName(usage.pkg, usage.name, quietNames), usage.ms)
                     }

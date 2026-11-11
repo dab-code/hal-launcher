@@ -206,6 +206,13 @@
     <string name="hidden_apps_title">Verborgen apps</string>
     <string name="hidden_apps_desc">Apps die alleen verschijnen als je zoekt</string>
     <string name="hidden_apps_empty">Geen verborgen apps. Houd een app in Alle apps ingedrukt om hem te verbergen.</string>
+    <string name="essential_apps_title">Essentiële apps</string>
+    <string name="essential_apps_desc">Tijd in deze apps telt niet mee voor de totale schermtijd.</string>
+    <string name="essential_apps_empty">Geen essentiële apps. Houd een app in Alle apps ingedrukt om hem als essentieel te markeren.</string>
+    <string name="action_mark_essential">Markeren als essentieel</string>
+    <string name="action_remove_essential">Niet meer essentieel</string>
+    <string name="action_remove">Verwijderen</string>
+    <string name="usage_essential_line">Essentieel: %1$s · %2$s</string>
     <string name="single_match_toggle">App openen als zoeken één resultaat vindt</string>
     <string name="single_match_desc">Opent de app als maar één app overeenkomt</string>
     <!-- Round 4: quiet apps and the one review request. -->

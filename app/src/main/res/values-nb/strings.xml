@@ -206,6 +206,13 @@
     <string name="hidden_apps_title">Skjulte apper</string>
     <string name="hidden_apps_desc">Apper som bare vises når du søker</string>
     <string name="hidden_apps_empty">Ingen skjulte apper. Trykk lenge på en app i Alle apper for å skjule den.</string>
+    <string name="essential_apps_title">Nødvendige apper</string>
+    <string name="essential_apps_desc">Tid i disse appene teller ikke med i den totale skjermtiden.</string>
+    <string name="essential_apps_empty">Ingen nødvendige apper. Trykk lenge på en app i Alle apper for å merke den som nødvendig.</string>
+    <string name="action_mark_essential">Merk som nødvendig</string>
+    <string name="action_remove_essential">Fjern fra nødvendige</string>
+    <string name="action_remove">Fjern</string>
+    <string name="usage_essential_line">Nødvendige: %1$s · %2$s</string>
     <string name="single_match_toggle">Åpne appen når søket finner ett treff</string>
     <string name="single_match_desc">Åpner appen når bare én app passer</string>
     <!-- Round 4: quiet apps and the one review request. -->

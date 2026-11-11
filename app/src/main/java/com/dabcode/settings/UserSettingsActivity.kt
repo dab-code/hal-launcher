@@ -91,6 +91,7 @@ class UserSettingsActivity : AppCompatActivity() {
                     val reminderSettings by settingsViewModel.reminderSettings.collectAsStateWithLifecycle()
                     val openSingleMatch by settingsViewModel.openSingleMatch.collectAsStateWithLifecycle()
                     val hiddenApps by settingsViewModel.hiddenApps.collectAsStateWithLifecycle()
+                    val essentialApps by settingsViewModel.essentialApps.collectAsStateWithLifecycle()
                     val customAppNames by settingsViewModel.customAppNames.collectAsStateWithLifecycle()
                     val context = LocalContext.current
 
@@ -142,7 +143,9 @@ class UserSettingsActivity : AppCompatActivity() {
                         onOpenSingleMatchToggle = { settingsViewModel.updateOpenSingleMatch(it) },
                         hiddenApps = hiddenApps,
                         customAppNames = customAppNames,
-                        onUnhideApp = { settingsViewModel.setAppHidden(it, false) }
+                        onUnhideApp = { settingsViewModel.setAppHidden(it, false) },
+                        essentialApps = essentialApps,
+                        onRemoveEssential = { settingsViewModel.setAppEssential(it, false) }
                     )
                 }
             }
@@ -237,10 +240,13 @@ fun UserSettingsScreen(
     onOpenSingleMatchToggle: (Boolean) -> Unit = {},
     hiddenApps: Set<String> = emptySet(),
     customAppNames: Map<String, String> = emptyMap(),
-    onUnhideApp: (String) -> Unit = {}
+    onUnhideApp: (String) -> Unit = {},
+    essentialApps: Set<String> = emptySet(),
+    onRemoveEssential: (String) -> Unit = {}
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     var showHiddenApps by remember { mutableStateOf(false) }
+    var showEssentialApps by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -408,10 +414,14 @@ fun UserSettingsScreen(
         }
 
         if (showHiddenApps) {
-            HiddenAppsDialog(
-                hidden = hiddenApps,
+            AppListDialog(
+                title = stringResource(R.string.hidden_apps_title),
+                description = null,
+                emptyText = stringResource(R.string.hidden_apps_empty),
+                actionText = stringResource(R.string.action_unhide),
+                packages = hiddenApps,
                 customNames = customAppNames,
-                onUnhide = onUnhideApp,
+                onAction = onUnhideApp,
                 onDismiss = { showHiddenApps = false }
             )
         }
@@ -427,6 +437,25 @@ fun UserSettingsScreen(
                 subtitle = stringResource(R.string.screen_time_subtitle),
                 onClick = { context.startActivity(Intent(context, UsageStatsActivity::class.java)) }
             )
+
+            NavigationRow(
+                title = stringResource(R.string.essential_apps_title),
+                subtitle = stringResource(R.string.essential_apps_desc),
+                onClick = { showEssentialApps = true }
+            )
+        }
+
+        if (showEssentialApps) {
+            AppListDialog(
+                title = stringResource(R.string.essential_apps_title),
+                description = stringResource(R.string.essential_apps_desc),
+                emptyText = stringResource(R.string.essential_apps_empty),
+                actionText = stringResource(R.string.action_remove),
+                packages = essentialApps,
+                customNames = customAppNames,
+                onAction = onRemoveEssential,
+                onDismiss = { showEssentialApps = false }
+            )
         }
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -439,6 +468,7 @@ fun UserSettingsScreen(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
+
     }
 }
 
@@ -738,10 +768,18 @@ fun UsageRemindersSetting(
 
 /** The list of hidden apps. Each app has an "Unhide" button. */
 @Composable
-fun HiddenAppsDialog(
-    hidden: Set<String>,
+/**
+ * A dialog with a list of apps ([packages]). Each app has one action button ([actionText]).
+ * The [description] shows above the list.
+ */
+fun AppListDialog(
+    title: String,
+    description: String?,
+    emptyText: String,
+    actionText: String,
+    packages: Set<String>,
     customNames: Map<String, String>,
-    onUnhide: (String) -> Unit,
+    onAction: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
@@ -751,24 +789,27 @@ fun HiddenAppsDialog(
         installed = withContext(Dispatchers.IO) { getInstalledApps(context) }
     }
     // An app that is not installed anymore does not show.
-    val shown = remember(installed, hidden, customNames) {
+    val shown = remember(installed, packages, customNames) {
         applyCustomNames(installed.orEmpty(), customNames)
-            .filter { it.packageName in hidden }
+            .filter { it.packageName in packages }
             .sortedBy { normalizeForSearch(it.appName) }
     }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.hidden_apps_title)) },
+        title = { Text(title) },
         text = {
-            if (installed != null && shown.isEmpty()) {
-                Text(stringResource(R.string.hidden_apps_empty))
-            } else {
-                LazyColumn(modifier = Modifier.heightIn(max = 400.dp)) {
-                    items(shown, key = { it.packageName }) { app ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(app.appName, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
-                            TextButton(onClick = { onUnhide(app.packageName) }) {
-                                Text(stringResource(R.string.action_unhide))
+            Column {
+                if (description != null) RowDescription(description, Modifier.padding(bottom = 12.dp))
+                if (installed != null && shown.isEmpty()) {
+                    Text(emptyText)
+                } else {
+                    LazyColumn(modifier = Modifier.heightIn(max = 400.dp)) {
+                        items(shown, key = { it.packageName }) { app ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(app.appName, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+                                TextButton(onClick = { onAction(app.packageName) }) {
+                                    Text(actionText)
+                                }
                             }
                         }
                     }

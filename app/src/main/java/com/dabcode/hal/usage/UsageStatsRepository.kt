@@ -9,19 +9,33 @@ import android.content.pm.PackageManager
 import android.os.Process
 import android.provider.Settings
 import android.telecom.TelecomManager
+import com.dabcode.settings.SettingsRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /** One usage event: the event type, the package name, the time stamp and the activity class name. */
 data class UsageEvent(val type: Int, val pkg: String?, val ts: Long, val cls: String? = null)
 
-/** The usage of today, from one scan of the usage events. [perAppMs] has no home-screen apps. */
+/**
+ * The usage of today, from one scan of the usage events. [perAppMs] has no home-screen apps,
+ * but it has the essential apps. [totalMs] has no essential apps.
+ */
 data class TodayUsage(val totalMs: Long, val pickups: Int, val perAppMs: Map<String, Long>)
 
 /** The foreground time of one app, with its label. */
 data class AppUsage(val name: String, val pkg: String, val ms: Long)
 
-/** One day of the weekly graph: the day label, the total time and the apps with more than 1 minute. */
-data class DayUsage(val label: String, val totalMs: Long, val apps: List<AppUsage>)
+/**
+ * One day of the weekly graph: the day label, the total time and the apps with more than 1 minute.
+ * The essential apps are not in [totalMs] and [apps]. They are in [essential].
+ */
+data class DayUsage(
+    val label: String,
+    val totalMs: Long,
+    val apps: List<AppUsage>,
+    val essential: List<AppUsage> = emptyList()
+)
 
 class UsageStatsRepository(private val context: Context) {
 
@@ -55,7 +69,7 @@ class UsageStatsRepository(private val context: Context) {
             homeScreenPackages()
         )
         return TodayUsage(
-            totalMs = perApp.values.sum(),
+            totalMs = withoutEssentialApps(perApp, essentialPackages()).values.sum(),
             pickups = countPickups(events, from = startOfDay),
             perAppMs = perApp
         )
@@ -75,6 +89,10 @@ class UsageStatsRepository(private val context: Context) {
                 AppUsage(name, pkg, ms)
             }
     }
+
+    /** The essential apps of the user. Their time is not screen time. */
+    private fun essentialPackages(): Set<String> =
+        runBlocking { SettingsRepository(context).essentialApps.first() }
 
     /** The packages of all home-screen apps: HAL and each app that answers the HOME intent. */
     private fun homeScreenPackages(): Set<String> {
@@ -117,6 +135,7 @@ class UsageStatsRepository(private val context: Context) {
         val cal = Calendar.getInstance()
         val homePackages = homeScreenPackages()
         val visible = visibleUsage()
+        val essential = essentialPackages()
 
         for (daysAgo in 7 downTo 0) {
             cal.timeInMillis = now
@@ -135,27 +154,41 @@ class UsageStatsRepository(private val context: Context) {
                 computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart)
             )
             val dayLabel = android.text.format.DateFormat.format("EEE", cal).toString()
+            val apps = withoutHomeApps(perApp, homePackages)
             // Show only the apps with more than 1 minute.
-            val rows = withoutHomeApps(perApp, homePackages).filter { it.value > 60_000 }
-            result.add(DayUsage(dayLabel, screenTimeMs(perApp, homePackages), toAppUsageList(rows)))
+            val rows = withoutEssentialApps(apps, essential).filter { it.value > 60_000 }
+            result.add(
+                DayUsage(
+                    dayLabel,
+                    screenTimeMs(withoutEssentialApps(perApp, essential), homePackages),
+                    toAppUsageList(rows),
+                    toAppUsageList(onlyEssentialApps(apps, essential))
+                )
+            )
         }
         return result
     }
 
-    // The screen time from [dayStart] to [dayEnd], without the home-screen apps.
+    // The screen time from [dayStart] to [dayEnd], without the home-screen apps and the essential apps.
     private fun dayScreenTime(
         dayStart: Long,
         dayEnd: Long,
         homePackages: Set<String>,
+        essential: Set<String>,
         visible: (Map<String, Long>) -> Map<String, Long>
     ): Long = screenTimeMs(
-        visible(computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart)),
+        withoutEssentialApps(
+            visible(computePerAppUsage(readEvents(dayStart - LEAD_IN_MS, dayEnd), dayEnd, countFrom = dayStart)),
+            essential
+        ),
         homePackages
     )
 
-    // The totals of the past days of this week, and the start of the day when they were read.
-    // Past days do not change. Read them again only when the day changes.
+    // The totals of the past days of this week, the start of the day when they were read, and the
+    // essential apps of that read. Past days do not change. Read them again when the day or the
+    // essential apps change.
     private var pastDaysReadOn = -1L
+    private var pastDaysEssential: Set<String> = emptySet()
     private var pastDaysTotals: List<Long> = emptyList()
 
     /**
@@ -165,7 +198,8 @@ class UsageStatsRepository(private val context: Context) {
     @Synchronized
     fun getWeekSoFar(todayMs: Long): List<Long> {
         val todayStart = startOfDay(System.currentTimeMillis())
-        if (pastDaysReadOn != todayStart) {
+        val essential = essentialPackages()
+        if (pastDaysReadOn != todayStart || pastDaysEssential != essential) {
             val homePackages = homeScreenPackages()
             val visible = visibleUsage()
             val cal = Calendar.getInstance()
@@ -176,9 +210,10 @@ class UsageStatsRepository(private val context: Context) {
                 cal.add(Calendar.DAY_OF_YEAR, -daysAgo)
                 val dayStart = startOfDay(cal.timeInMillis)
                 val dayEnd = nextDayStart(dayStart)
-                dayScreenTime(dayStart, dayEnd, homePackages, visible)
+                dayScreenTime(dayStart, dayEnd, homePackages, essential, visible)
             }
             pastDaysReadOn = todayStart
+            pastDaysEssential = essential
         }
         return pastDaysTotals + todayMs
     }
@@ -191,13 +226,14 @@ class UsageStatsRepository(private val context: Context) {
         val todayStart = startOfDay(System.currentTimeMillis())
         val homePackages = homeScreenPackages()
         val visible = visibleUsage()
+        val essential = essentialPackages()
         val cal = Calendar.getInstance()
         return (days downTo 1).map { daysAgo ->
             cal.timeInMillis = todayStart
             cal.add(Calendar.DAY_OF_YEAR, -daysAgo)
             val dayStart = startOfDay(cal.timeInMillis)
             val dayEnd = nextDayStart(dayStart)
-            dayScreenTime(dayStart, dayEnd, homePackages, visible)
+            dayScreenTime(dayStart, dayEnd, homePackages, essential, visible)
         }
     }
 
@@ -245,6 +281,18 @@ fun homePackagesOf(candidates: List<HomeCandidate>, ownPackage: String): Set<Str
 /** Remove the home-screen apps from the per-app time. Time on a home screen is not app use. */
 fun withoutHomeApps(perAppMs: Map<String, Long>, homePackages: Set<String>): Map<String, Long> =
     perAppMs.filterKeys { it !in homePackages }
+
+/** Remove the essential apps ([essential]) from the per-app time. Their time is not screen time. */
+fun withoutEssentialApps(perAppMs: Map<String, Long>, essential: Set<String>): Map<String, Long> =
+    perAppMs.filterKeys { it !in essential }
+
+/** Keep only the essential apps ([essential]) of the per-app time. */
+fun onlyEssentialApps(perAppMs: Map<String, Long>, essential: Set<String>): Map<String, Long> =
+    perAppMs.filterKeys { it in essential }
+
+/** The names on the essential line: up to 2 names, then "+N" for the other apps. "Maps, Spotify +1". */
+fun essentialNames(names: List<String>): String =
+    names.take(2).joinToString(", ") + if (names.size > 2) " +${names.size - 2}" else ""
 
 /** The action of an InCallService. The in-call screen of a phone has a service with this action. */
 const val IN_CALL_SERVICE_ACTION = "android.telecom.InCallService"
