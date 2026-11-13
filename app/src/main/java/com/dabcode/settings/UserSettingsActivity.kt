@@ -845,10 +845,10 @@ fun RowDescription(text: String, modifier: Modifier = Modifier) {
     )
 }
 
-/** The app version as "HAL 2.1 (27)": the version name and the version code. Null when the read fails. */
+/** Returns the app version text, for example "HAL 2.1.1". Returns null when the read fails. */
 fun appVersion(context: android.content.Context): String? = try {
     val info = context.packageManager.getPackageInfo(context.packageName, 0)
-    "HAL ${info.versionName} (${androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(info)})"
+    "HAL ${info.versionName}"
 } catch (_: PackageManager.NameNotFoundException) {
     null
 }
