@@ -11,8 +11,8 @@ android {
         applicationId = "com.dabcode.hal"
         minSdk = 24
         targetSdk = 36
-        versionCode = 28
-        versionName = "2.1.1"
+        versionCode = 29
+        versionName = "2.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
