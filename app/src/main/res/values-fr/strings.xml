@@ -215,6 +215,8 @@
     <string name="usage_essential_line">Essentielles : %1$s · %2$s</string>
     <string name="single_match_toggle">Ouvrir l\'app quand la recherche trouve un seul résultat</string>
     <string name="single_match_desc">Ouvre l\'app quand une seule app correspond</string>
+    <string name="jump_bar_toggle">Barre A-Z</string>
+    <string name="jump_bar_desc">Affiche les lettres sur le côté droit de Toutes les apps. Touche une lettre pour y aller.</string>
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">Apps silencieuses</string>
     <string name="quiet_apps_row_desc">Leurs notifications attendent sur l\'écran Temps d\'écran</string>

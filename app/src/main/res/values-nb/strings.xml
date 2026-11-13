@@ -212,6 +212,8 @@
     <string name="usage_essential_line">Nødvendige: %1$s · %2$s</string>
     <string name="single_match_toggle">Åpne appen når søket finner ett treff</string>
     <string name="single_match_desc">Åpner appen når bare én app passer</string>
+    <string name="jump_bar_toggle">A-Å-hoppelinje</string>
+    <string name="jump_bar_desc">Viser bokstavene på høyre side av Alle apper. Trykk på en bokstav for å hoppe dit.</string>
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">Stille apper</string>
     <string name="quiet_apps_row_desc">Varslene deres venter på skjermtidsskjermen</string>

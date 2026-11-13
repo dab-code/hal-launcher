@@ -90,6 +90,7 @@ class UserSettingsActivity : AppCompatActivity() {
                     val notificationDotsEnabled by settingsViewModel.notificationDotsEnabled.collectAsStateWithLifecycle()
                     val reminderSettings by settingsViewModel.reminderSettings.collectAsStateWithLifecycle()
                     val openSingleMatch by settingsViewModel.openSingleMatch.collectAsStateWithLifecycle()
+                    val showJumpBar by settingsViewModel.showJumpBar.collectAsStateWithLifecycle()
                     val hiddenApps by settingsViewModel.hiddenApps.collectAsStateWithLifecycle()
                     val essentialApps by settingsViewModel.essentialApps.collectAsStateWithLifecycle()
                     val customAppNames by settingsViewModel.customAppNames.collectAsStateWithLifecycle()
@@ -141,6 +142,8 @@ class UserSettingsActivity : AppCompatActivity() {
                         onReminderMinutesSelected = { settingsViewModel.updateReminderMinutes(it) },
                         openSingleMatch = openSingleMatch,
                         onOpenSingleMatchToggle = { settingsViewModel.updateOpenSingleMatch(it) },
+                        showJumpBar = showJumpBar,
+                        onShowJumpBarToggle = { settingsViewModel.updateShowJumpBar(it) },
                         hiddenApps = hiddenApps,
                         customAppNames = customAppNames,
                         onUnhideApp = { settingsViewModel.setAppHidden(it, false) },
@@ -238,6 +241,8 @@ fun UserSettingsScreen(
     onReminderMinutesSelected: (Int) -> Unit = {},
     openSingleMatch: Boolean = false,
     onOpenSingleMatchToggle: (Boolean) -> Unit = {},
+    showJumpBar: Boolean = true,
+    onShowJumpBarToggle: (Boolean) -> Unit = {},
     hiddenApps: Set<String> = emptySet(),
     customAppNames: Map<String, String> = emptyMap(),
     onUnhideApp: (String) -> Unit = {},
@@ -404,6 +409,15 @@ fun UserSettingsScreen(
                 description = stringResource(R.string.single_match_desc),
                 checked = openSingleMatch,
                 onToggle = onOpenSingleMatchToggle
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            SwitchRow(
+                title = stringResource(R.string.jump_bar_toggle),
+                description = stringResource(R.string.jump_bar_desc),
+                checked = showJumpBar,
+                onToggle = onShowJumpBarToggle
             )
 
             NavigationRow(

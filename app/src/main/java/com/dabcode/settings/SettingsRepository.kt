@@ -84,6 +84,8 @@ class SettingsRepository(private val context: Context) {
         val HIDDEN_APPS = stringSetPreferencesKey("hidden_apps")
         // Open the app when the search in All Apps finds exactly one app.
         val OPEN_SINGLE_MATCH = booleanPreferencesKey("open_single_match")
+        // Show the A-Z jump bar in All Apps.
+        val SHOW_JUMP_BAR = booleanPreferencesKey("show_jump_bar")
         // Usage reminders and the interval in minutes.
         val USAGE_REMINDERS = booleanPreferencesKey("usage_reminders")
         val USAGE_REMINDER_MINUTES = intPreferencesKey("usage_reminder_minutes")
@@ -120,6 +122,7 @@ class SettingsRepository(private val context: Context) {
         const val CLOCK_SIZE_BIG = "big"
         const val CLOCK_SIZE_SMALL = "small"
         const val DEFAULT_OPEN_SINGLE_MATCH = false
+        const val DEFAULT_SHOW_JUMP_BAR = true
         val DEFAULT_REMINDER_SETTINGS = ReminderSettings(enabled = false, minutes = DEFAULT_REMINDER_MINUTES)
     }
 
@@ -291,6 +294,12 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun updateOpenSingleMatch(enabled: Boolean) {
         dataStore.edit { it[PreferencesKeys.OPEN_SINGLE_MATCH] = enabled }
+    }
+
+    val showJumpBar: Flow<Boolean> = setting { it[PreferencesKeys.SHOW_JUMP_BAR] ?: DEFAULT_SHOW_JUMP_BAR }
+
+    suspend fun updateShowJumpBar(enabled: Boolean) {
+        dataStore.edit { it[PreferencesKeys.SHOW_JUMP_BAR] = enabled }
     }
 
     /** The reminder settings from one read. An unknown interval gives the default interval. */

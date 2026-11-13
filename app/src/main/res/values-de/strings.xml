@@ -212,6 +212,8 @@
     <string name="usage_essential_line">Wichtig: %1$s · %2$s</string>
     <string name="single_match_toggle">App öffnen, wenn die Suche genau einen Treffer hat</string>
     <string name="single_match_desc">Öffnet die App, wenn nur eine App passt</string>
+    <string name="jump_bar_toggle">A-Z-Sprungleiste</string>
+    <string name="jump_bar_desc">Zeigt die Buchstaben am rechten Rand von Alle Apps. Tippe auf einen Buchstaben, um dorthin zu springen.</string>
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">Stille Apps</string>
     <string name="quiet_apps_row_desc">Ihre Benachrichtigungen warten auf dem Bildschirmzeit-Bildschirm</string>

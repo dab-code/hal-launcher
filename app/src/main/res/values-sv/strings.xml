@@ -212,6 +212,8 @@
     <string name="usage_essential_line">Viktiga: %1$s · %2$s</string>
     <string name="single_match_toggle">Öppna appen när sökningen hittar en enda träff</string>
     <string name="single_match_desc">Öppnar appen när bara en app matchar</string>
+    <string name="jump_bar_toggle">A-Ö-hoppfält</string>
+    <string name="jump_bar_desc">Visar bokstäverna på höger sida av Alla appar. Tryck på en bokstav för att hoppa dit.</string>
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">Tysta appar</string>
     <string name="quiet_apps_row_desc">Deras aviseringar väntar på skärmtidsskärmen</string>
