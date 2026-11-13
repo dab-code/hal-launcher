@@ -259,6 +259,8 @@
     <string name="usage_essential_line">Essential: %1$s · %2$s</string>
     <string name="single_match_toggle">Open app when search finds one match</string>
     <string name="single_match_desc">Opens the app when only one app matches</string>
+    <string name="jump_bar_toggle">A-Z jump bar</string>
+    <string name="jump_bar_desc">Show the letters on the right side of All Apps. Tap a letter to jump to it.</string>
     <!-- Debug builds only. Not translated. -->
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">Quiet apps</string>

@@ -99,6 +99,7 @@ class ManageAppsActivity : AppCompatActivity() {
                 val hiddenApps by settingsViewModel.hiddenApps.collectAsStateWithLifecycle()
                 val essentialApps by settingsViewModel.essentialApps.collectAsStateWithLifecycle()
                 val openSingleMatch by settingsViewModel.openSingleMatch.collectAsStateWithLifecycle()
+                val showJumpBar by settingsViewModel.showJumpBar.collectAsStateWithLifecycle()
                 val quietApps by settingsViewModel.quietApps.collectAsStateWithLifecycle()
                 val quietEntries by QuietStore.get(this@ManageAppsActivity).entries.collectAsStateWithLifecycle()
                 var showMenu by remember { mutableStateOf(false) }
@@ -176,7 +177,8 @@ class ManageAppsActivity : AppCompatActivity() {
                         onSetHidden = settingsViewModel::setAppHidden,
                         essentialApps = essentialApps,
                         onSetEssential = settingsViewModel::setAppEssential,
-                        openSingleMatch = openSingleMatch
+                        openSingleMatch = openSingleMatch,
+                        showJumpBar = showJumpBar
                     )
                 }
 
@@ -202,6 +204,7 @@ fun ManageAppsScreen(
     essentialApps: Set<String> = emptySet(),
     onSetEssential: (pkg: String, essential: Boolean) -> Unit = { _, _ -> },
     openSingleMatch: Boolean = false,
+    showJumpBar: Boolean = true,
     usageStatsViewModel: com.dabcode.hal.usage.UsageStatsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     focusModeViewModel: com.dabcode.hal.focus.FocusModeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
@@ -390,8 +393,8 @@ fun ManageAppsScreen(
                         )
                     }
                 }
-                // The A-Z jump bar. Show it only when the search field is empty.
-                if (searchQuery.isBlank() && currentApps.isNotEmpty()) {
+                // The A-Z jump bar. Show it only when the setting is on and the search field is empty.
+                if (showJumpBar && searchQuery.isBlank() && currentApps.isNotEmpty()) {
                     JumpBar(letters = jumpLetters(locale.language), onLetter = { letter ->
                         val index = jumpIndex(currentApps.map { it.appName }, letter, locale.language)
                         if (index >= 0) coroutineScope.launch { listState.scrollToItem(index) }

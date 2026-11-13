@@ -209,6 +209,8 @@
     <string name="usage_essential_line">必須: %1$s · %2$s</string>
     <string name="single_match_toggle">検索結果が 1 件ならアプリを開く</string>
     <string name="single_match_desc">一致するアプリが1つだけなら、そのアプリを開きます</string>
+    <string name="jump_bar_toggle">A-Zジャンプバー</string>
+    <string name="jump_bar_desc">すべてのアプリの右側に文字を表示します。文字をタップすると、その位置へ移動します。</string>
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">静かなアプリ</string>
     <string name="quiet_apps_row_desc">通知はスクリーンタイム画面で待ちます</string>

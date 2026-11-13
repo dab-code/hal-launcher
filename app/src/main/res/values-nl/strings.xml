@@ -212,6 +212,8 @@
     <string name="usage_essential_line">Essentieel: %1$s · %2$s</string>
     <string name="single_match_toggle">App openen als zoeken één resultaat vindt</string>
     <string name="single_match_desc">Opent de app als maar één app overeenkomt</string>
+    <string name="jump_bar_toggle">A-Z-sprongbalk</string>
+    <string name="jump_bar_desc">Toont de letters aan de rechterkant van Alle apps. Tik op een letter om erheen te springen.</string>
     <!-- Round 4: quiet apps and the one review request. -->
     <string name="quiet_apps_title">Stille apps</string>
     <string name="quiet_apps_row_desc">Hun meldingen wachten op het schermtijdscherm</string>

@@ -152,6 +152,13 @@ class SettingsViewModel(
         viewModelScope.launch { repository.updateOpenSingleMatch(enabled) }
     }
 
+    val showJumpBar: StateFlow<Boolean> = repository.showJumpBar
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsRepository.DEFAULT_SHOW_JUMP_BAR)
+
+    fun updateShowJumpBar(enabled: Boolean) {
+        viewModelScope.launch { repository.updateShowJumpBar(enabled) }
+    }
+
     val quietApps: StateFlow<Set<String>> = repository.quietApps
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptySet())
 
